@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd   
+    http://www.springframework.org/schema/tx   
+    http://www.springframework.org/schema/tx/spring-tx-4.3.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+    http://www.springframework.org/schema/mvc  
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+	<!-- 自动扫描的包名 -->
+	<context:component-scan base-package="cn.yfc.aone.*"></context:component-scan>
+	<!-- 默认的注解映射的支持 -->
+	<mvc:annotation-driven />
+	<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 配置c3p0数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.connection.driverclass}" />
+		<property name="jdbcUrl" value="${jdbc.connection.url}" />
+		<property name="user" value="${jdbc.connection.username}" />
+		<property name="password" value="${jdbc.connection.password}" />
+		<property name="acquireIncrement" value="${acquireIncrement}" />
+		<property name="initialPoolSize" value="${initialPoolSize}" />
+		<property name="maxPoolSize" value="${maxPoolSize}" />
+		<property name="minPoolSize" value="${minPoolSize}" />
+		<property name="maxStatements" value="${maxStatements}" />
+		<property name="maxStatementsPerConnection" value="${maxStatementsPerConnection}" />
+		<property name="testConnectionOnCheckin" value="true" />
+		<property name="idleConnectionTestPeriod" value="60" />
+	</bean>
+
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"
+		lazy-init="true" />
+
+	<!-- <bean id="simpleJdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"> 
+		<constructor-arg> <ref bean="dataSource" /> </constructor-arg> </bean> -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+	<!-- 视图解释类 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" /><!-- 可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+</beans> 
