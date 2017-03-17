@@ -19,12 +19,19 @@
 	href="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all.css" />
 	<link rel="stylesheet" type="text/css"
 	href="${eam}/ext/example.css"/>
+	<link rel="stylesheet" type="text/css"
+	href="${eam}/ext/writer.css"/>
+	
 <link rel="stylesheet" type="text/css"
 	href="${eam}/ext/resources/css/css/icon.css" />
-<script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
+
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
+<script type="text/javascript" src="${eam}/ext/include-ext.js"></script>
 <script type="text/javascript" src="${eam}/ext/options-toolbar.js"></script>
-<script type="text/javascript" src="${eam}/js/homepage.js"></script>
+<script type="text/javascript" src="${eam}/ext/examples.js"></script>
+<script type="text/javascript" src="${eam}/ext/ext-theme-neptune.js"></script>
+<script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="${eam}/js/combos.js"></script>
 
 </head>
 <body>

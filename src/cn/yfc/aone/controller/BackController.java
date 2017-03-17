@@ -27,6 +27,11 @@ public class BackController {
 	 return new ModelAndView("/homepage");
 	 }
 	
+	@RequestMapping("/model")
+	 public ModelAndView model() {
+	 return new ModelAndView("/model");
+	 }
+	
 	@RequestMapping("/worktable")
 	 public ModelAndView worktable() {
 	 return new ModelAndView("/WorkTable");
