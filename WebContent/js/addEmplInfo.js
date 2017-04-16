@@ -3,7 +3,7 @@ Ext.onReady(function(){
 	
 	var msgBasicMsg = Ext.create('Ext.form.Panel', {
    		id:'msgBasicMsg',
-	    title: '手机基本信息输入：',
+	    title: '在外员工信息录入：',
 	    autoScroll:true,
 	    renderTo:Ext.getBody(), 
 	    bodyPadding: 5,

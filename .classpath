@@ -59,5 +59,11 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-webmvc-4.3.6.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-websocket-4.3.6.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xwork-core-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-3.15.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-examples-3.15.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-excelant-3.15.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-ooxml-3.15.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-ooxml-schemas-3.15.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-scratchpad-3.15.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

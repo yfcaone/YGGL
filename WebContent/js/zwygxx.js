@@ -1,6 +1,6 @@
 Ext.onReady(function() {
 
-	// 定义列
+	// 瀹氫箟鍒�
 	var columns = [ {
 		header : '姓名',
 		width : 85,
@@ -49,7 +49,7 @@ Ext.onReady(function() {
 		flex : 1
 	} ];
 
-	// 转换原始数据为EXT可以显示的数据
+	// 杞崲鍘熷鏁版嵁涓篍XT鍙互鏄剧ず鐨勬暟鎹�
 	var store = new Ext.data.ArrayStore({
 
 		id : 'selected',
@@ -79,9 +79,18 @@ Ext.onReady(function() {
 				type : 'json',
 				root : 'list'
 			}
+		},
+		listeners:{
+
+			  'beforeload': function (store, op, options) {
+                var params = {
+                   // codeDesc: Ext.getCmp('code_desc').getValue()
+                };
+                Ext.apply(store.proxy.extraParams, params);
+            }
 		}
 	});
-	// 加载数据
+	// 鍔犺浇鏁版嵁
 	store.load({
 		params : {
 			start : 0,
@@ -89,13 +98,16 @@ Ext.onReady(function() {
 		}
 	});
 	var grid = new Ext.grid.GridPanel({
-		renderTo : 'grid', // 渲染位置
-		store : store, // 转换后的数据
+		renderTo : 'grid', // 娓叉煋浣嶇疆
+		store : store, // 杞崲鍚庣殑鏁版嵁
 		id : 'gridd',
-		columns : columns, // 显示列
-		stripeRows : true, // 斑马线效果
-		loadMask : true, // 显示遮罩和提示功能,即加载Loading……
-		 listeners: {//双击表格任意行弹框显示本行信息
+		
+		columns : columns, // 鏄剧ず鍒�
+		stripeRows : true, // 鏂戦┈绾挎晥鏋�
+		loadMask : true, // 鏄剧ず閬僵鍜屾彁绀哄姛鑳�,鍗冲姞杞絃oading鈥︹��
+		
+		 listeners: {
+			 
 			 dblclick:{
 				 element:'body',
 				 fn:function(){
@@ -108,32 +120,48 @@ Ext.onReady(function() {
 							 width: 500,
 							 height: 450,
 							 border:0,
+							 title : '员工位置',
 							 hidden :true,
 							 modal:true,
 							 iconCls: "Applicationformedit",
 							 x: 350,
 							 y: 10,
 							 bodyStyle: "background:#ffffff",
+							 buttons : [ {
+									xtype : "button",
+									text : "返回",
+									handler : function() {
+										win.close();
+									}
+								}],
 							 items: [{
 						        	width:'100%',
-						        	html:'<iframe id=cenIF src=map.action scrolling=yes height=600 width=100%></iframe>'
+						        	
+						        	html:'<iframe id=cenIF src=map.action?account='+rec["account"]+'  scrolling=yes height=600 width=100%></iframe>'
 						        }]	
 						 });
 						 win.show(this);
 					 }else{
 						 Ext.Msg.alert(
-								 "提示",
-								 "请选择一行记录进行查看")
+								 "提示", "请选择一行记录进行查看")
 					 }
 				 }
 			 }
 		 },
+		
 		bbar : new Ext.PagingToolbar({
 			pageSize : 10,
 			store : store,
 			displayInfo : true,
-			displayMsg : '显示第{0}条到{1}条记录，一共 {2}条',
-			emptyMsg : "没有记录"
-		})
+			displayMsg : '显示 {0} - {1} 条，共计 {2} 条',
+			emptyMsg : "没有数据"
+		}),
+			tbar:[{
+			xtype:'button',
+			text: "编辑",
+            iconCls: "Applicationformedit",
+            handler: function () {
+            }
+		}],
 	});
 });

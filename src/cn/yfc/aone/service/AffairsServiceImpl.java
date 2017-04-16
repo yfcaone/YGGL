@@ -21,4 +21,10 @@ public class AffairsServiceImpl implements AffairsService{
 		return list;
 	}
 
+	@Override
+	public Map<String, Object > getMapjw(String cname) {
+		Map<String, Object > map = affairsDao.getMapjw(cname);
+		return map;
+	}
+
 }

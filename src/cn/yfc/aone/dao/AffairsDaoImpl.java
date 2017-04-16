@@ -57,4 +57,12 @@ public class AffairsDaoImpl implements AffairsDao {
 		return list;
 	}
 
+	@Override
+	public Map<String, Object> getMapjw(String cname) {
+		String sql = "select c.longitude,c.latitude from coordinate c where c.cname =?";
+		Map<String, Object> map = jdbcTemplate.queryForMap(sql,cname);
+		
+		return map;
+	}
+
 }
