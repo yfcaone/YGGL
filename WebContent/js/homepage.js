@@ -15,8 +15,7 @@
         var north = new Ext.panel.Panel({
             region: 'north',
             title: '员工后台管理系统',
-            height: 105,
-            html: '<font size="6"><b>员工后台管理系统</b></font>',
+           
             bbar: [{
                 text: '行政办公'
             }, '-', {
@@ -56,21 +55,21 @@
             layout: 'auto',
 
             items: [{
-                title: "客户管理",
+                title: "员工管理",
                 height: 285,
                 collapsible: true,
                 layout: 'accordion',//使用手风琴进行布局
                 items: [{
-                    title: '客户信息管理',
+                    title: '在外员工信息管理',
                     items: [{
                         xtype: 'treepanel',
                         border: 0,
                         rootVisible: false,//根节点是否可见
                         root: {
                             children: [
-                                {text: '在外员工信息', leaf: true},
+                                {text: '未评在外员工信息', leaf: true},
                                 {text: '添加在外员工信息', leaf: true},
-                                {text: '产品信息', leaf: true},
+                                {text: '已评在外员工信息', leaf: true},
                                 {text: '客户信息', leaf: true},
                                 {text: 'VIP客户信息', leaf: true},
                                 {text: '销售信息', leaf: true}
@@ -82,12 +81,12 @@
                                 //如果是叶子，对应上面的leaf==true
                                 if(record.data.leaf){
                                     //如果没有与当前点击项目id相同的的标签页的话
-                                	if(record.data.text=="在外员工信息"){
+                                	if(record.data.text=="未评在外员工信息"){
                                 		$('#cenIF').attr("src","zwygxx.action");
                                 	}else if(record.data.text=="添加在外员工信息"){
                                 		$('#cenIF').attr("src","addEmplInfo.action");
-                                	}else if(record.data.text=="输入手机照片"){
-                                		$('#cenIF').attr("src","picLoad.action");
+                                	}else if(record.data.text=="已评在外员工信息"){
+                                		$('#cenIF').attr("src","ypzwygxx.action");
                                 	}
                                 }
                             }

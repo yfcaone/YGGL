@@ -1,3 +1,6 @@
+
+
+
 <%@ page language="java" isELIgnored="false"
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -23,12 +26,12 @@
 	href="${eam}/ext/resources/css/css/icon.css" />
 <script type="text/javascript" src="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all-debug.css"></script>
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
-<script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="${eam}/js/zwygxx.js"></script>
- </script>
+<script type="text/javascript" src="${eam}/js/logContent.js"></script>
+<script type="text/javascript">
+	var lname="${lname}";
+	var laffair="${laffair}";
+</script>
 </head>
 <body>
-
-<div id="grid"></div>
 
 </body>

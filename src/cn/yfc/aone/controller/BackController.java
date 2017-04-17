@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +90,16 @@ public class BackController {
     }
 	
 	/**
+     * 已评在外员工信息界面
+     *
+     * @return
+     */
+	@RequestMapping("/ypzwygxx")
+    public ModelAndView ypzwygxx() {
+        return new ModelAndView("ypzwygxx");
+    }
+	
+	/**
 	 * 获取地图经纬度并先死到地图上
 	 * @param model
 	 * @param account 员工姓名
@@ -106,14 +117,79 @@ public class BackController {
         return new ModelAndView("map");
     }
 	
+	/**
+	 * 根据用户名和项目名称 获得日志内容
+	 * @return
+	 * @throws Exception 
+	 */
+	
+	@RequestMapping("/logContent")
+	public ModelAndView logContent(ModelMap model,String account,String affair) throws Exception{
+		
+		String lname = new String(account.getBytes("ISO8859-1"), "UTF-8");
+		String laffair = new String(affair.getBytes("ISO8859-1"), "UTF-8");
+		model.addAttribute("lname",lname );
+		model.addAttribute("laffair",laffair );
+		
+		return new ModelAndView("logContent");
+	}
+	
+	/**
+	 * 获取所有员工信息
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("emplinfor")
 	public List<Affairs> emplInfor(){
 		List<Affairs> list = affairsService.selectAll();
 		//List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		System.out.println("s====================="+list);
 		return list;
 	}
+	/**
+	 * 获取已评在外员工信息
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getYpzaygInfo")
+	public List<Map<String,Object>> getYpzaygInfo(){
+		List<Map<String,Object>> list = affairsService.getYpzaygInfo();
+		//List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		return list;
+	}
+
+	/**
+	 *  获得日志内容
+	 * @return
+	 * @throws Exception 
+	 */
+	@ResponseBody
+	@RequestMapping("getLogContent")
+	public List<Map<String,Object>> getLogContent(String laffair,String lname) throws Exception{
+		String name = new String(lname.getBytes("ISO8859-1"), "UTF-8");
+		String affair = new String(laffair.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println(name+affair);
+		List<Map<String,Object>> list = affairsService.getLogContent(name,affair);
+		return list;
+	}
+	
+	/**
+	 * 给员工评分
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("addPcInfo")
+	public String addPcInfo(@RequestBody Map<String, Object> map,String account,String affair) throws Exception{
+		String eaccount = new String(account.getBytes("ISO8859-1"), "UTF-8");
+		String eaffair = new String(affair.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println("account====="+eaccount+"affair======="+eaffair);
+		System.out.println("map==========="+map);
+		affairsService.addPcInfo(map,eaccount,eaffair);
+		
+		return "true";
+	}
+
 	
 /**-------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=================================*/
 
@@ -128,4 +204,6 @@ public class BackController {
     public ModelAndView yuangong() {
         return new ModelAndView("yuangong");
     }
+	
+	
 }

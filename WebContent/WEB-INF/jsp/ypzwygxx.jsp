@@ -23,8 +23,7 @@
 	href="${eam}/ext/resources/css/css/icon.css" />
 <script type="text/javascript" src="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all-debug.css"></script>
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
-<script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="${eam}/js/zwygxx.js"></script>
+<script type="text/javascript" src="${eam}/js/ypzwygxx.js"></script>
  </script>
 </head>
 <body>

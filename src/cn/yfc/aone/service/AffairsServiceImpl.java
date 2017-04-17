@@ -27,4 +27,25 @@ public class AffairsServiceImpl implements AffairsService{
 		return map;
 	}
 
+	@Override
+	public List<Map<String, Object>> getLogContent(String name, String affair) {
+		List<Map<String, Object>> list = affairsDao.getLogContent(name,affair);
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getYpzaygInfo() {
+		List<Map<String,Object>> list = affairsDao.getYpzaygInfo();
+		return list;
+	}
+
+	@Override
+	public void addPcInfo(Map<String, Object> map,String eaccount, String eaffair) {
+		int kqpc = (int) map.get("kqpc-inputEl");
+		int rqpc = (int)map.get("rzpc-inputEl");
+		int jgpc = (int)map.get("jgpc-inputEl");
+		int ave = (kqpc+rqpc+jgpc)/3;
+		affairsDao.addPcInfo(map,eaccount,eaffair,ave);	
+	}
+
 }
