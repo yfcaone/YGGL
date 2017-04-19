@@ -54,10 +54,18 @@ html, body {
 	function createMap() {
 		var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
 		var point = new BMap.Point(${j},${w} );//定义一个中心点坐标
-		map.centerAndZoom(point, 12);//设定地图的中心点和坐标并将地图显示在地图容器中
+		map.centerAndZoom(point, 15);//设定地图的中心点和坐标并将地图显示在地图容器中
+		var marker = new BMap.Marker(new BMap.Point(${j},${w}));//创建点
+		marker.addEventListener("click",attribute);
+		map.addOverlay(marker);//增加点
+		function attribute(){
+			var p = marker.getPosition();
+			alert("marker的位置是"+p.lng +","+p.lat);
+		}
 		window.map = map;//将map变量存储在全局
 	}
 
+	
 	//地图事件设置函数：
 	function setMapEvent() {
 		map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
@@ -70,8 +78,13 @@ html, body {
 	function addMapControl() {
 		//向地图中添加缩放控件
 		var ctrl_nav = new BMap.NavigationControl({
+			
+			//靠左上角位置
 			anchor : BMAP_ANCHOR_TOP_LEFT,
-			type : BMAP_NAVIGATION_CONTROL_LARGE
+			//LARGE类型
+			type : BMAP_NAVIGATION_CONTROL_LARGE,
+			//启动显示定位
+			enableGeolocation:true
 		});
 		map.addControl(ctrl_nav);
 		//向地图中添加缩略图控件
@@ -85,6 +98,22 @@ html, body {
 			anchor : BMAP_ANCHOR_BOTTOM_LEFT
 		});
 		map.addControl(ctrl_sca);
+		//添加定位控件
+		/* var geolocationControl = new BMap.GeolocationControl();
+		geolocationControl.addEventListener("locationSuccess",function(e){
+			var address = '';
+			address += e.addressComponent.province;
+			address += e.addressComponent.city;
+			address += e.addressComponent.district;
+			address += e.addressComponent.street;
+			address += e.addressComponent.streetNumber;
+			alert("当前定位地址为："+address);
+		});
+		geolocationControl.addEventListener("locationError",function(e){
+			//定位失败事件
+			alert(e.message);
+		});
+		map.addControl(geolocationControl); */
 	}
 
 	//标注点数组

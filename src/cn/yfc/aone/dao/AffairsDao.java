@@ -11,7 +11,7 @@ public interface AffairsDao {
 	 * 获得所有员工信息
 	 * @return
 	 */
-	List<Affairs> selectAll();
+	List<Map<String, Object>>  selectAll();
 
 	/**
 	 * 获取地图经纬度并先死到地图上
@@ -40,7 +40,8 @@ public interface AffairsDao {
 	 * @param eaffair 
 	 * @param eaccount 
 	 * @param ave 
+	 * @param username 
 	 */
-	void addPcInfo(Map<String, Object> map, String eaccount, String eaffair, int ave);
+	void addPcInfo(Map<String, Object> map, String eaccount, String eaffair, int ave, String username);
 
 }

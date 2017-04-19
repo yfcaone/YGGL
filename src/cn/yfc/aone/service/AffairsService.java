@@ -3,43 +3,52 @@ package cn.yfc.aone.service;
 import java.util.List;
 import java.util.Map;
 
-import cn.yfc.aone.beans.Affairs;
-
 public interface AffairsService {
 
 	/**
 	 * 获得所有员工信息
+	 * 
 	 * @return
 	 */
-	List<Affairs> selectAll();
+	List<Map<String, Object>> selectAll();
 
 	/**
 	 * 获取地图经纬度并先死到地图上
+	 * 
 	 * @param cname
 	 */
-	Map<String, Object > getMapjw(String cname);
+	Map<String, Object> getMapjw(String cname);
 
 	/**
-	 *  获得日志内容
-	 * @param affair 
-	 * @param name 
+	 * 获得日志内容
+	 * 
+	 * @param affair
+	 * @param name
 	 * @return
 	 */
-	List<Map<String,Object>> getLogContent(String name, String affair);
+	List<Map<String, Object>> getLogContent(String name, String affair);
 
 	/**
-	 * /**
-	 * 获取已评在外员工信息
+	 * /** 获取已评在外员工信息
+	 * 
 	 * @return
 	 */
-	
+
 	List<Map<String, Object>> getYpzaygInfo();
 
 	/**
 	 * 给员工评分
+	 * 
 	 * @param map
-	 * @param eaffair 
-	 * @param eaccount 
+	 * @param eaffair
+	 * @param eaccount
 	 */
 	void addPcInfo(Map<String, Object> map, String eaccount, String eaffair);
+
+	/**
+	 * 获得用户名
+	 * 
+	 * @param username
+	 */
+	void getUsername(String username);
 }

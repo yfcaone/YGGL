@@ -1,6 +1,6 @@
 Ext.onReady(function() {
 
-	// 瀹氫箟鍒�
+	
 	var columns = [ {
 		header : '姓名',
 		width : "10%",
@@ -39,7 +39,7 @@ Ext.onReady(function() {
 		flex : 1
 	} ];
 
-	// 杞崲鍘熷鏁版嵁涓篍XT鍙互鏄剧ず鐨勬暟鎹�
+	
 	var store = new Ext.data.ArrayStore({
 
 		id : 'selected',
@@ -66,7 +66,7 @@ Ext.onReady(function() {
 		} ],
 		proxy : {
 			type : 'ajax',
-			url : 'emplinfor.action',
+			url : 'getSelfInfo.action',
 			reader : {
 				type : 'json',
 				root : 'list'
@@ -82,7 +82,6 @@ Ext.onReady(function() {
             }
 		}
 	});
-	// 鍔犺浇鏁版嵁
 	store.load({
 		params : {
 			start : 0,
@@ -90,13 +89,13 @@ Ext.onReady(function() {
 		}
 	});
 	var grid = new Ext.grid.GridPanel({
-		renderTo : 'grid', // 娓叉煋浣嶇疆
-		store : store, // 杞崲鍚庣殑鏁版嵁
+		renderTo : 'grid', 
+		store : store, 
 		id : 'gridd',
 		columnLines: true,
-		columns : columns, // 鏄剧ず鍒�
-		stripeRows : true, // 鏂戦┈绾挎晥鏋�
-		loadMask : true, // 鏄剧ず閬僵鍜屾彁绀哄姛鑳�,鍗冲姞杞絃oading鈥︹��
+		columns : columns, 
+		stripeRows : true, 
+		loadMask : true, 
 		
 		 listeners: {
 			 
@@ -159,7 +158,7 @@ Ext.onReady(function() {
             			var rec = selectedI.selected.items[0]["data"];
             			//弹窗显示信息
             			var win=Ext.create("widget.window",{
-             	title : '查看公告',
+             	title : '编辑',
              	closable:false,
             	id:'lookupWin',
             	

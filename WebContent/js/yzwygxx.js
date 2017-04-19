@@ -1,6 +1,6 @@
 Ext.onReady(function() {
 
-	// 瀹氫箟鍒�
+	
 	var columns = [ {
 		header : '姓名',
 		width : "10%",
@@ -39,7 +39,7 @@ Ext.onReady(function() {
 		flex : 1
 	} ];
 
-	// 杞崲鍘熷鏁版嵁涓篍XT鍙互鏄剧ず鐨勬暟鎹�
+
 	var store = new Ext.data.ArrayStore({
 
 		id : 'selected',
@@ -61,12 +61,12 @@ Ext.onReady(function() {
 			name : 'ISDEAL'
 		}, {
 			name : 'SCORE'
-		}, {
+		} , {
 			name : 'ISCOMPLETE'
 		} ],
 		proxy : {
 			type : 'ajax',
-			url : 'getYpzaygInfo.action',
+			url : 'getZwygInfo.action',
 			reader : {
 				type : 'json',
 				root : 'list'
@@ -82,7 +82,7 @@ Ext.onReady(function() {
             }
 		}
 	});
-	// 鍔犺浇鏁版嵁
+	
 	store.load({
 		params : {
 			start : 0,
@@ -90,36 +90,61 @@ Ext.onReady(function() {
 		}
 	});
 	var grid = new Ext.grid.GridPanel({
-		renderTo : 'grid', // 娓叉煋浣嶇疆
-		store : store, // 杞崲鍚庣殑鏁版嵁
+		renderTo : 'grid', 
+		store : store, 
 		id : 'gridd',
 		columnLines: true,
-		columns : columns, // 鏄剧ず鍒�
-		stripeRows : true, // 鏂戦┈绾挎晥鏋�
-		loadMask : true, // 鏄剧ず閬僵鍜屾彁绀哄姛鑳�,鍗冲姞杞絃oading鈥︹��
-
+		columns : columns, 
+		stripeRows : true, 
+		loadMask : true, 
+		listeners: {
+			 dblclick:{
+				 element:'body',
+				 fn:function(){
+					 var selectedI = Ext.getCmp("gridd").getSelectionModel();
+					 if(selectedI.selected.items && selectedI.selected.items.length>0){
+						 var rec = selectedI.selected.items[0]["data"];
+						 win = Ext.create('widget.window',{
+							 titleCollapse :true,
+							 closable:false,
+							 width: 1000,
+							 height: 500,
+							 border:0,
+							 title : rec['ACCOUNT']+'的位置',
+							 hidden :true,
+							 modal:true,
+							 iconCls: "Applicationformedit",
+							 x: 80,
+							 y: 20,
+							 bodyStyle: "background:#ffffff",
+							 buttons : [ {
+									xtype : "button",
+									text : "返回",
+									handler : function() {
+										win.close();
+									}
+								}],
+							 items: [{
+						        	width:'100%',
+						        	
+						        	html:'<iframe id=cenIF src=map.action?account='+rec["ACCOUNT"]+'  scrolling=yes height=600 width=100%></iframe>'
+						        }]	
+						 });
+						 win.show(this);
+					 }else{
+						 Ext.Msg.alert(
+								 "提示", "请选择一行记录进行查看")
+					 }
+				 }
+			 }
+		 },
+		
 		bbar : new Ext.PagingToolbar({
-			pageSize : 10,
+			pageSize : 3,
 			store : store,
 			displayInfo : true,
 			displayMsg : '显示 {0} - {1} 条，共计 {2} 条',
 			emptyMsg : "没有数据"
-		}),
-			tbar:[{
-			xtype:'button',
-			text: "查看",
-            iconCls: "Applicationformmagnify",
-            handler: function () {
-				 var selectedI = Ext.getCmp("gridd").getSelectionModel();
-				 if(selectedI.selected.items && selectedI.selected.items.length>0){
-					 var rec = selectedI.selected.items[0]["data"];
-					 window.location.href='logContent.action?account='+rec["ACCOUNT"]+'&affair='+rec["AFFAIR"]+' '
-				 }else{
-					 Ext.Msg.alert(
-							 "提示", "请选择一行记录进行查看")
-				 }
-			 
-            }
-		}],
+		})
 	});
 });

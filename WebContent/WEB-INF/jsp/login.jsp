@@ -21,13 +21,13 @@
 	href="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all.css" />
 <link rel="stylesheet" type="text/css"
 	href="${eam}/ext/resources/css/css/icon.css" />
+<script type="text/javascript" src="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all-debug.css"></script>
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
 <script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="${eam}/js/zwygxx.js"></script>
+<script type="text/javascript" src="${eam}/js/login.js"></script>
+<script type="text/javascript" src="${eam}/js/login1.js"></script>
+ 
 
 </head>
 <body>
-
-<div id="grid"></div>
-
 </body>
