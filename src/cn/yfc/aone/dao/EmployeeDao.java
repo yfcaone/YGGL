@@ -21,4 +21,20 @@ public interface EmployeeDao {
 	 */
 	List<Map<String, Object>> getSelfInfo(String username) throws Exception;
 
+	/**
+	 * 添加日志
+	 * @param map
+	 * @param eaccount
+	 * @param eaffair
+	 * @param username 
+	 */
+	void addLogInfo(Map<String, Object> map, String eaccount, String eaffair, String username);
+
+	/**
+	 * 添加员工信息
+	 * @param map
+	 * @param username
+	 */
+	void addData(Map<String, Object> map, String username);
+
 }

@@ -16,7 +16,7 @@ import cn.yfc.aone.service.AffairsService;
 
 @Controller
 @RequestMapping("/yggl")
-public class BackController {
+public class ManagerController {
 
 	Log log = LogFactory.getLog(this.getClass());
 
@@ -109,7 +109,6 @@ public class BackController {
 		String laffair = new String(affair.getBytes("ISO8859-1"), "UTF-8");
 		model.addAttribute("lname", lname);
 		model.addAttribute("laffair", laffair);
-
 		return new ModelAndView("logContent");
 	}
 

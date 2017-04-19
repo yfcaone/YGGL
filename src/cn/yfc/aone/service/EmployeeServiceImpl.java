@@ -29,5 +29,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<Map<String, Object>> list = employeeDao.getSelfInfo(username);
 		return list;
 	}
+	@Override
+	public void addLogInfo(Map<String, Object> map, String eaccount, String eaffair) {
+		employeeDao.addLogInfo(map,eaccount,eaffair,username);
+		
+	}
+	@Override
+	public void addData(Map<String, Object> map) {
+		employeeDao.addData(map,username);
+		
+	}
 
 }

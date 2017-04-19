@@ -25,4 +25,18 @@ public interface EmployeeService {
 	 */
 	List<Map<String, Object>> getSelfInfo() throws Exception;
 
+	/**
+	 * 添加日志
+	 * @param map
+	 * @param eaccount
+	 * @param eaffair
+	 */
+	void addLogInfo(Map<String, Object> map, String eaccount, String eaffair);
+
+	/**
+	 * 添加在外员工信息
+	 * @param map
+	 */
+	void addData(Map<String, Object> map);
+
 }

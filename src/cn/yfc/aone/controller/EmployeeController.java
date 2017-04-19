@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -62,6 +63,23 @@ public class EmployeeController {
 	 public ModelAndView grzwxx() {
 	 return new ModelAndView("/grzwxx");
 	 }
+	
+	/**
+	 * 根据用户名和项目名称 获得日志内容
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+
+	@RequestMapping("/logContent")
+	public ModelAndView logContent(ModelMap model, String account, String affair) throws Exception {
+		String lname = new String(account.getBytes("ISO8859-1"), "UTF-8");
+		String laffair = new String(affair.getBytes("ISO8859-1"), "UTF-8");
+		model.addAttribute("lname", lname);
+		model.addAttribute("laffair", laffair);
+		return new ModelAndView("logContent");
+	}
+	
 	/**
 	 * 获取未完成员工信息
 	 * 
@@ -88,5 +106,52 @@ public class EmployeeController {
 		List<Map<String, Object>> list = employeeService.getSelfInfo();
 		System.out.println(list);
 		return list;
+	}
+	
+	/**
+	 * 添加日志
+	 * @param map
+	 * @param account
+	 * @param affair
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("addLogInfo")
+	public String addLogInfo(@RequestBody Map<String, Object> map, String account, String affair) throws Exception {
+		String eaccount = new String(account.getBytes("ISO8859-1"), "UTF-8");
+		String eaffair = new String(affair.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println(map+eaccount+eaffair);
+		employeeService.addLogInfo(map, eaccount, eaffair);
+		return "true";
+	}
+	/**
+	 * 获得日志内容
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("getLogContent")
+	public List<Map<String, Object>> getLogContent(String laffair, String lname) throws Exception {
+		String name = new String(lname.getBytes("ISO8859-1"), "UTF-8");
+		String affair = new String(laffair.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println(name + affair);
+		List<Map<String, Object>> list = affairsService.getLogContent(name, affair);
+		return list;
+	}
+	
+	/**
+	 * 添加在外员工信息
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("addData")
+	public String addData(@RequestBody Map<String, Object> map) throws Exception {
+		System.out.println("添加日志"+map);
+		employeeService.addData(map);
+		return "true";
 	}
 }

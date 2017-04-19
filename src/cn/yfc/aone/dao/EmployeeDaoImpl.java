@@ -32,5 +32,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,cname);
 		return list;
 	}
+	@Override
+	public void addLogInfo(Map<String, Object> map, String eaccount, String eaffair,String username) {
+		String sql = "insert into log_content values(LOG_CONTENT_S.NEXTVAL,?,sysdate,'"+map.get("log")+"',?,?)";
+		jdbcTemplate.update(sql,eaccount,eaffair,username);
+	}
+	@Override
+	public void addData(Map<String, Object> map, String username) {
+		
+		
+	}
 
 }
