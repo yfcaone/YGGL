@@ -9,7 +9,11 @@
                     south
                 ]
             });
+            
+             
+           
         });
+   
         //编写 各个模块
         //编写north panel
         var north = new Ext.panel.Panel({
@@ -165,7 +169,7 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                 menu:new Ext.menu.Menu({
                     ignoreParentCilcks:true,
                     items:[{
-                        text:'打开',handler:win
+                        text:'打开'
                     },{
                         text:'保存'
                     },{
@@ -187,7 +191,7 @@ var centerWin = Ext.create('Ext.panel.Panel', {
             }],
     	    items: [{
 	        	width:'100%',
-	        	html:'<iframe id=cenIF src=zwygxx.action scrolling=yes height=600 width=100%></iframe>'
+	        	html:'<iframe id=cenIF src=zwygxx.action scrolling=yes height="100%" width=100%></iframe>'
 	        }]	
     	});
 
@@ -197,7 +201,174 @@ var centerWin = Ext.create('Ext.panel.Panel', {
             region: 'south',
             height: 30,
             bbar: [{
-                text: '工具栏'
+                text:'工具栏',
+                menu:new Ext.menu.Menu({
+                    ignoreParentCilcks:true,
+                    items:[{
+                        text:'创建用户',
+                        handler:function(){
+
+                        	var win = Ext.create('widget.window', {
+                        		title : '创建用户',
+                        		closable : false,
+                        		width : 700,
+                        		height : 450,
+                        		
+                        		iconCls : "Add",
+                        		bodyStyle : "background:#ffffff",
+                        		resizable : false,
+                        		constrain : true,
+                        		buttons : [{
+                        			xtype : "button",
+                        			text : "返回",
+                        			handler : function() {
+                        				win.close();
+                        			}
+                        		}],
+                        		modal : true,
+                        		items : [{
+                        			xtype : 'form',
+                        			id : 'form',
+                        			layout : 'hbox',
+                        			border : 0,
+                        			items : [{
+                        				xtype : 'textfield',
+                        				margin:'10 20 10 10 ',
+                        				labelWidth : 50,
+                        				width:300,
+                        				labelAlign : 'left',
+                        				fieldLabel : '姓&nbsp;&nbsp;名',
+                        				id : 'account',
+                        				name : 'account'
+                        			},{
+                        				xtype : 'button',
+                        				labelWidth : 50,
+                        				labelAlign : 'left',
+                        				text:'创&nbsp;&nbsp;建',
+                        				margin:'10 20 10 0 ',
+                        				id : 'create',
+                        				name : 'create',
+                        				handler : function() {
+                    						var form = Ext.getCmp("form").getForm();
+                    						if (form.isValid()) {
+                    							var formData = form.getValues();
+                    							$.ajax({
+                    								async : false,
+                    								type : "post",
+                    								url : "createUser.action",
+                    								data : JSON.stringify(formData),
+                    								dataType : "json",
+                    								contentType : "application/json; charset=UTF-8",
+                    								success : function(form,options) {
+                    									Ext.Msg.alert("提示", "添加成功",function() {
+                    											var store = Ext.getStore("gridd1");
+                    											store.reload();
+                    											
+                    											});
+                    								}
+                    							});
+                    						}
+                    					
+                    					
+                    					}
+                        					
+                        			}]
+                        		},{
+                        			xtype : "form",
+                        			layout : "vbox",
+                        			border : false,
+                        			id : "gridform",
+                        			items : [{
+                        				xtype : 'grid',
+                        				columnLines : true,
+                        				id : "gridd",
+                        				width : "100%",
+                        				store : store1,
+                        				
+                        				tbar : [{
+                        					xtype : "button",
+                        					text : "删除",
+                        					iconCls : "Delete",
+                        					handler : function() {}
+                        				}, '->',{
+                        					xtype : 'textfield',
+                        					name : 'name',
+                        					id : 'name',
+                        					margin:'0 10 0 0',
+                        					labelWidth : 30,
+                            				fieldLabel : '姓名'
+                        				},{
+                        					xtype : 'datetimefield',
+                        					name : 'date',
+                        					fieldLabel : "时间",
+                        					labelWidth : 30,
+                        					id : 'date',
+                        					value:new Date() ,  
+                        					format : 'Y-m-d h:i:s'
+                        				}, {
+                        					xtype : 'button',
+                        					text : '查询',
+                        					iconCls : "Bulletmagnify",
+                        					handler : function() {
+                        						var store = Ext.getStore("gridd1");
+                        						store.reload();
+                        					}
+                        				}],
+                        				columns : [{
+                        							header : '序号',
+                        							width : '10%',
+                        							menuDisabled : true,// 去掉表格下拉排序
+                        							dataIndex : 'VID',
+                        							align : "center"
+                        						}, {
+                        							header : '姓名',
+                        							dataIndex : 'VNAME',
+                        							menuDisabled : true,
+                        							width : '20%',
+                        							align : "center"
+                        						},{
+                        							header : '用户名',
+                        							dataIndex : 'VACCOUNT',
+                        							menuDisabled : true,
+                        							width : '25%',
+                        							align : "center"
+                        						},
+                        						// 可设置是否为该列进行排序
+                        						{
+                        							header : '密码',
+                        							dataIndex : 'VPASSWORD',
+                        							width : '25%',
+                        							menuDisabled : true,
+                        							align : "center"
+
+                        						},
+                        						{
+                        							header : '时间',
+                        							dataIndex : 'VDATE',
+                        							width : '25%',
+                        							menuDisabled : true,
+                        							align : "center",
+                        							format : 'Y-m-d',
+                        							flex : 1
+
+                        						}]
+                        				
+                        				
+                        			}]
+                        		
+                        			
+                        		}]
+                        	});
+                        	win.show(this);
+
+                        }
+                    
+                    },{
+                        text:'保存'
+                    },{
+                        text:'退出'
+                    }]
+                })
             }, '-', {
                 xtype: "tbfill"
             }, '-', {
@@ -208,91 +379,6 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                 text: '与我们练习'
             }]
         });//south panel
-        // 创建修改窗体
-        function win() {
-            Ext.QuickTips.init();
-            Ext.form.Field.prototype.msgTarget = 'side';
-            //提交按钮处理方法
-            var btnsubmitclick = function () {
-                if (form.getForm().isValid()) {
-                    //通常发送到服务器端获取返回值再进行处理，我们在以后的教程中再讲解表单与服务器的交互问题。
-                    Ext.Msg.alert("提示", "登陆成功!");
-                }
-            }
-            //重置按钮"点击时"处理方法
-            var btnresetclick = function () {
-                form.getForm().reset();
-            }
-            
-            
-            //提交按钮
-            var btnsubmit = new Ext.Button({
-                text: '提 交',
-                handler: btnsubmitclick
-                
-            });
-            //重置按钮
-            var btnreset = new Ext.Button({
-                text: '重 置',
-                handler: btnresetclick
-            });
-            //用户名input
-            var txtusername = new Ext.form.TextField({
-                width: 200,
-                allowBlank: false,
-                maxLength: 20,
-                name: 'username',
-                fieldLabel: '用户名',
-                blankText: '请输入用户名',
-                maxLengthText: '用户名不能超过20个字符'
-            });
-            //密码input
-            var txtpassword = new Ext.form.TextField({
-                width: 200,
-                allowBlank: false,
-                maxLength: 20,
-                inputType: 'password',
-                name: 'password',
-                fieldLabel: '密　码',
-                blankText: '请输入密码',
-                maxLengthText: '密码不能超过20个字符'
-            });
-            //验证码input
-            var txtcheckcode = new Ext.form.TextField({
-                fieldLabel: '验证码',
-                id: 'checkcode',
-                allowBlank: false,
-                width: 176,
-                blankText: '请输入验证码！',
-                maxLength: 4,
-                maxLengthText: '验证码不能超过4个字符!'
-            });
-            //表单
-            var form = new Ext.form.FormPanel({
-               
-                labelAlign: 'right',
-                labelWidth: 45,
-                frame: true,
-                cls: 'loginform',
-                buttonAlign: 'center',
-                bodyStyle: 'padding:6px 0px 0px 15px',
-                items: [txtusername, txtpassword, txtcheckcode],
-                buttons: [btnsubmit, btnreset]
-            });
-            //窗体
-            var win = new Ext.Window({
-                title: '用户登陆',
-                iconCls: 'loginicon',
-                plain: true,
-                width: 276,
-                height: 174,
-                resizable: false,
-                shadow: true,
-                modal: true,
-                closable: false,
-                animCollapse: true,
-                items: form,
-                url: 'form.action'
-            });
-            win.show();
-        }
+     
+       
+   

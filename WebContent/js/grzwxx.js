@@ -276,7 +276,6 @@ Ext.onReady(function() {
             					text : "提交",
             					handler : function() {
             						
-            						console.log(rec["account"]+rec["affair"]);
             						var form = Ext.getCmp("pcInfo").getForm();
             						if (form.isValid()) {
             							var formData = form.getValues();

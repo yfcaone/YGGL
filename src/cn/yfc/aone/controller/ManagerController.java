@@ -47,7 +47,7 @@ public class ManagerController {
 	}
 
 	/**
-	 * 员工信息
+	 * 员工信息界面
 	 *
 	 * @return
 	 */
@@ -77,7 +77,7 @@ public class ManagerController {
 	}
 
 	/**
-	 * 获取地图经纬度并先死到地图上
+	 * 获取地图经纬度并显示到地图上
 	 * 
 	 * @param model
 	 * @param account
@@ -97,7 +97,7 @@ public class ManagerController {
 	}
 
 	/**
-	 * 根据用户名和项目名称 获得日志内容
+	 * 根据用户名和项目名称 获得日志内容界面
 	 * 
 	 * @return
 	 * @throws Exception
@@ -112,6 +112,8 @@ public class ManagerController {
 		return new ModelAndView("logContent");
 	}
 
+	
+/**-------------------------------------------------------------------------------------------------------------------------------------------*/	
 	/**
 	 * 获取未评测员工信息
 	 * 
@@ -168,7 +170,34 @@ public class ManagerController {
 		affairsService.addPcInfo(map, eaccount, eaffair);
 		return "true";
 	}
-
+	
+	/**
+	 * 创建用户
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("createUser")
+	public String createUser(@RequestBody Map<String, Object> map) throws Exception {
+		System.out.println("map=-=-=-=-="+map);
+		affairsService.createUser(map);
+		return "true";
+	}
+	
+	/**
+	 * 获得用户并查询
+	 * @return
+	 * @throws Exception 
+	 */
+	@ResponseBody
+	@RequestMapping("getUserInfo")
+	public List<Map<String, Object>> getUserInfo(String date,String name) throws Exception {
+		System.out.println("date=============="+date+name);
+		String vname = new String(name.getBytes("ISO8859-1"), "UTF-8");
+		List<Map<String, Object>> list = affairsService.getUserInfo(date,vname);
+		return list;
+	}
 	/** -------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================= */
 
 	/**

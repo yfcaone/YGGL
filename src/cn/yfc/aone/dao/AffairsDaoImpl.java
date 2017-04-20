@@ -58,4 +58,27 @@ public class AffairsDaoImpl implements AffairsDao {
 
 	}
 
+	@Override
+	public List<Map<String, Object>> getUserInfo(String condition) {
+		String sql = "select v.vid,v.vaccount,v.vpassword,v.vname,to_char(v.vdate,'yyyy-mm-dd HH24:mi:ss')vdate  from VIRTUAL_USER v"
+				+ " where v.vid<>0  "+condition
+				+ " ";
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		return list;
+	}
+
+	@Override
+	public void createUser(List<Map<String, Object>> map1) {
+		
+		for (Map<String, Object> map : map1) {
+			String sql = "insert into VIRTUAL_USER VALUES(VIRTUAL_USER_S.NEXTVAL,'"+map.get("account")+"','"+map.get("number")+"','员工','"+map.get("name")+"',SYSDATE)";
+			jdbcTemplate.update(sql);
+		}
+		for (Map<String, Object> map : map1) {
+			String sql = "insert into users values(USERS_S.NEXTVAL,'"+map.get("account")+"','"+map.get("number")+"','员工','"+map.get("name")+"')";
+			jdbcTemplate.update(sql);
+		}
+		
+	}
+
 }

@@ -23,7 +23,12 @@
 	href="${eam}/ext/resources/css/css/icon.css" />
 <script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
+<script type="text/javascript" src="${eam}/ext/datetime/UX_TimePickerField.js"></script>
+<script type="text/javascript" src="${eam}/ext/datetime/UX_DateTimePicker.js"></script>
+<script type="text/javascript" src="${eam}/ext/datetime/UX_DateTimeMenu.js"></script>
+<script type="text/javascript" src="${eam}/ext/datetime/UX_DateTimeField.js"></script>
 <script type="text/javascript" src="${eam}/js/homepage.js"></script>
+<script type="text/javascript" src="${eam}/js/createUser.js"></script>
 <script type="text/javascript">
 var username='${username}';
 </script>

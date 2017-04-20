@@ -51,4 +51,18 @@ public interface AffairsService {
 	 * @param username
 	 */
 	void getUsername(String username);
+
+	/**
+	 * 创建用户并查询
+	 * @param date
+	 * @param vname
+	 * @return
+	 */
+	List<Map<String, Object>> getUserInfo(String date, String vname);
+
+	/**
+	 * 创建用户
+	 * @param map
+	 */
+	void createUser(Map<String, Object> map);
 }

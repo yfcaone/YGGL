@@ -44,4 +44,17 @@ public interface AffairsDao {
 	 */
 	void addPcInfo(Map<String, Object> map, String eaccount, String eaffair, int ave, String username);
 
+	/**
+	 *  查询用户并查询
+	 * @param condition
+	 * @return
+	 */
+	List<Map<String, Object>> getUserInfo(String condition);
+
+	/**
+	 * 创建用户
+	 * @param map1
+	 */
+	void createUser(List<Map<String, Object>> map1);
+
 }
