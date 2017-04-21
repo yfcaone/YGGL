@@ -24,7 +24,7 @@
 <script type="text/javascript" src="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all-debug.css"></script>
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
 <script type="text/javascript" src="${eam}/js/ypzwygxx.js"></script>
- </script>
+
 </head>
 <body>
 

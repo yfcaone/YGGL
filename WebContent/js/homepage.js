@@ -8,10 +8,7 @@
                     centerWin,
                     south
                 ]
-            });
-            
-             
-           
+            }); 
         });
    
         //编写 各个模块
@@ -72,7 +69,6 @@
                         root: {
                             children: [
                                 {text: '未评在外员工信息', leaf: true},
-                                {text: '添加在外员工信息', leaf: true},
                                 {text: '已评在外员工信息', leaf: true},
                                 {text: '客户信息', leaf: true},
                                 {text: 'VIP客户信息', leaf: true},
@@ -87,8 +83,6 @@
                                     //如果没有与当前点击项目id相同的的标签页的话
                                 	if(record.data.text=="未评在外员工信息"){
                                 		$('#cenIF').attr("src","zwygxx.action");
-                                	}else if(record.data.text=="添加在外员工信息"){
-                                		$('#cenIF').attr("src","addEmplInfo.action");
                                 	}else if(record.data.text=="已评在外员工信息"){
                                 		$('#cenIF').attr("src","ypzwygxx.action");
                                 	}
@@ -152,8 +146,6 @@
             }]
         });
         //编写 west panel
-        //定义表格数据
-        var datas = [];
         //编写 center panel
 var centerWin = Ext.create('Ext.panel.Panel', {
         	id:'centerWin',

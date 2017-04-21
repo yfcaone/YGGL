@@ -7,10 +7,11 @@ public interface AffairsService {
 
 	/**
 	 * 获得所有员工信息
+	 * @param lname 
 	 * 
 	 * @return
 	 */
-	List<Map<String, Object>> selectAll();
+	List<Map<String, Object>> selectAll(String lname);
 
 	/**
 	 * 获取地图经纬度并先死到地图上
@@ -30,11 +31,12 @@ public interface AffairsService {
 
 	/**
 	 * /** 获取已评在外员工信息
+	 * @param lname 
 	 * 
 	 * @return
 	 */
 
-	List<Map<String, Object>> getYpzaygInfo();
+	List<Map<String, Object>> getYpzaygInfo(String lname);
 
 	/**
 	 * 给员工评分

@@ -156,7 +156,7 @@ Ext.onReady(function() {
 				text : "新建",
 				iconCls : "Add",
 				handler : function() {
-					win = Ext.create('widget.window', {
+					var win1 = Ext.create('widget.window', {
 						title : '员工在外信息',
 						closable : false,
 						width : 500,
@@ -186,7 +186,7 @@ Ext.onReady(function() {
 													function() {
 														var store = Ext.getStore("gridd");
 														store.reload();
-														win.close();
+														win1.close();
 													});
 										}
 									});

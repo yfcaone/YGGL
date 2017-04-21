@@ -19,8 +19,12 @@ public class AffairsServiceImpl implements AffairsService {
 	private AffairsDao affairsDao;
 
 	@Override
-	public List<Map<String, Object>> selectAll() {
-		List<Map<String, Object>> list = affairsDao.selectAll();
+	public List<Map<String, Object>> selectAll(String lname) {
+		String condition = "";
+		if (lname.length()>0) {
+			condition = condition +" and a.account = '"+lname+"'";
+		}
+		List<Map<String, Object>> list = affairsDao.selectAll(condition);
 		return list;
 	}
 
@@ -37,8 +41,12 @@ public class AffairsServiceImpl implements AffairsService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getYpzaygInfo() {
-		List<Map<String, Object>> list = affairsDao.getYpzaygInfo();
+	public List<Map<String, Object>> getYpzaygInfo(String lname) {
+		String condition = "";
+		if (lname.length()>0) {
+			condition = condition +" and a.account = '"+lname+"'";
+		}
+		List<Map<String, Object>> list = affairsDao.getYpzaygInfo(condition);
 		return list;
 	}
 
@@ -48,6 +56,7 @@ public class AffairsServiceImpl implements AffairsService {
 		int rqpc = (int) map.get("rzpc-inputEl");
 		int jgpc = (int) map.get("jgpc-inputEl");
 		int ave = (kqpc + rqpc + jgpc) / 3;
+		System.out.println("ddddddd==============================="+username);
 		affairsDao.addPcInfo(map, eaccount, eaffair, ave, username);
 	}
 

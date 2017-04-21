@@ -9,9 +9,10 @@ public interface AffairsDao {
 	
 	/**
 	 * 获得所有员工信息
+	 * @param condition 
 	 * @return
 	 */
-	List<Map<String, Object>>  selectAll();
+	List<Map<String, Object>>  selectAll(String condition);
 
 	/**
 	 * 获取地图经纬度并先死到地图上
@@ -30,9 +31,10 @@ public interface AffairsDao {
 
 	/**
 	 * 获取已评在外员工信息
+	 * @param condition 
 	 * @return
 	 */
-	List<Map<String, Object>> getYpzaygInfo();
+	List<Map<String, Object>> getYpzaygInfo(String condition);
 
 	/**
 	 * 给员工评测

@@ -14,10 +14,10 @@ public class AffairsDaoImpl implements AffairsDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public List<Map<String, Object>> selectAll() {
+	public List<Map<String, Object>> selectAll(String condition) {
 		String sql = "SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
 				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete "
-				+ "FROM AFFAIRS a where a.isdeal ='0'";
+				+ "FROM AFFAIRS a where a.isdeal ='0'"+condition;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 
 		return list;
@@ -40,10 +40,10 @@ public class AffairsDaoImpl implements AffairsDao {
 	}
 
 	@Override
-	public List<Map<String, Object>> getYpzaygInfo() {
+	public List<Map<String, Object>> getYpzaygInfo(String condition) {
 		String sql = "SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
 				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete "
-				+ "FROM AFFAIRS a where a.isdeal ='1'";
+				+ "FROM AFFAIRS a where a.isdeal ='1'"+condition;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		return list;
 	}
@@ -52,6 +52,7 @@ public class AffairsDaoImpl implements AffairsDao {
 	public void addPcInfo(Map<String, Object> map, String eaccount, String eaffair, int ave, String username) {
 		String sql = " insert into evaluat values(EVALUAT_S.NEXTVAL,?,?,'" + map.get("kqpc-inputEl") + "'," + "'"
 				+ map.get("rzpc-inputEl") + "','" + map.get("jgpc-inputEl") + "',?,SYSDATE)";
+		System.out.println("ddddddd==============================="+username);
 		jdbcTemplate.update(sql, eaccount, eaffair, username);
 		String sql2 = "update affairs a set a.score=?, a.isdeal='1' where a.account=?and a.affair=? ";
 		jdbcTemplate.update(sql2, ave, eaccount, eaffair);

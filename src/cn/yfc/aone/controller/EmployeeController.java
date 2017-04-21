@@ -18,23 +18,26 @@ import cn.yfc.aone.service.EmployeeService;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
-	
+
 	@Autowired
 	private EmployeeService employeeService;
 	@Autowired
 	private AffairsService affairsService;
+
 	@RequestMapping("/employee")
-	 public ModelAndView homePage(Model model,String username) throws Exception {
+	public ModelAndView homePage(Model model, String username) throws Exception {
 		String cname = new String(username.getBytes("ISO8859-1"), "UTF-8");
-		System.out.println("username=-=-=-=-="+cname);
+		System.out.println("username=-=-=-=-=" + cname);
 		employeeService.getUsername(username);
-		model.addAttribute("username",cname);
-	 return new ModelAndView("/Employee");
-	 }
+		model.addAttribute("username", cname);
+		return new ModelAndView("/Employee");
+	}
+
 	@RequestMapping("/yzwygxx")
-	 public ModelAndView yzwygxx() {
-	 return new ModelAndView("/yzwygxx");
-	 }
+	public ModelAndView yzwygxx() {
+		return new ModelAndView("/yzwygxx");
+	}
+
 	/**
 	 * 获取地图经纬度并先死到地图上
 	 * 
@@ -47,6 +50,7 @@ public class EmployeeController {
 	@RequestMapping("/map")
 	public ModelAndView map(ModelMap model, String account) throws Exception {
 		String cname = new String(account.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println("cname" + cname);
 		Map<String, Object> map = affairsService.getMapjw(cname);
 		String j = (String) map.get("LONGITUDE");
 		String w = (String) map.get("LATITUDE");
@@ -54,16 +58,17 @@ public class EmployeeController {
 		model.addAttribute("w", w);
 		return new ModelAndView("map");
 	}
-	
+
 	/**
 	 * 个人在外信息
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/grzwxx")
-	 public ModelAndView grzwxx() {
-	 return new ModelAndView("/grzwxx");
-	 }
-	
+	public ModelAndView grzwxx() {
+		return new ModelAndView("/grzwxx");
+	}
+
 	/**
 	 * 根据用户名和项目名称 获得日志内容
 	 * 
@@ -79,12 +84,12 @@ public class EmployeeController {
 		model.addAttribute("laffair", laffair);
 		return new ModelAndView("logContent");
 	}
-	
+
 	/**
 	 * 获取未完成员工信息
 	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping("getZwygInfo")
@@ -93,12 +98,12 @@ public class EmployeeController {
 		System.out.println(list);
 		return list;
 	}
-	
+
 	/**
 	 * 获取个人在外信息
 	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping("getSelfInfo")
@@ -107,9 +112,10 @@ public class EmployeeController {
 		System.out.println(list);
 		return list;
 	}
-	
+
 	/**
 	 * 添加日志
+	 * 
 	 * @param map
 	 * @param account
 	 * @param affair
@@ -121,10 +127,11 @@ public class EmployeeController {
 	public String addLogInfo(@RequestBody Map<String, Object> map, String account, String affair) throws Exception {
 		String eaccount = new String(account.getBytes("ISO8859-1"), "UTF-8");
 		String eaffair = new String(affair.getBytes("ISO8859-1"), "UTF-8");
-		System.out.println(map+eaccount+eaffair);
+		System.out.println(map + eaccount + eaffair);
 		employeeService.addLogInfo(map, eaccount, eaffair);
 		return "true";
 	}
+
 	/**
 	 * 获得日志内容
 	 * 
@@ -140,9 +147,10 @@ public class EmployeeController {
 		List<Map<String, Object>> list = affairsService.getLogContent(name, affair);
 		return list;
 	}
-	
+
 	/**
 	 * 添加在外员工信息
+	 * 
 	 * @param map
 	 * @return
 	 * @throws Exception
@@ -150,7 +158,7 @@ public class EmployeeController {
 	@ResponseBody
 	@RequestMapping("addData")
 	public String addData(@RequestBody Map<String, Object> map) throws Exception {
-		System.out.println("添加日志"+map);
+		System.out.println("添加日志" + map);
 		employeeService.addData(map);
 		return "true";
 	}

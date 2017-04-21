@@ -1,5 +1,6 @@
 package cn.yfc.aone.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
@@ -57,16 +58,6 @@ public class ManagerController {
 	}
 
 	/**
-	 * 添加员工信息界面
-	 *
-	 * @return
-	 */
-	@RequestMapping("/addEmplInfo")
-	public ModelAndView addEmplInfo() {
-		return new ModelAndView("addEmplInfo");
-	}
-
-	/**
 	 * 已评在外员工信息界面
 	 *
 	 * @return
@@ -112,17 +103,19 @@ public class ManagerController {
 		return new ModelAndView("logContent");
 	}
 
-	
-/**-------------------------------------------------------------------------------------------------------------------------------------------*/	
+	/** ------------------------------------------------------------------------------------------------------------------------------------------- */
 	/**
 	 * 获取未评测员工信息
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
 	@ResponseBody
 	@RequestMapping("emplinfor")
-	public List<Map<String, Object>> emplInfor() {
-		List<Map<String, Object>> list = affairsService.selectAll();
+	public List<Map<String, Object>> emplInfor(String name) throws Exception {
+		String lname = new String(name.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println("name============="+lname);
+		List<Map<String, Object>> list = affairsService.selectAll(lname);
 		System.out.println(list);
 		return list;
 	}
@@ -131,11 +124,14 @@ public class ManagerController {
 	 * 获取已评在外员工信息
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
 	@ResponseBody
 	@RequestMapping("getYpzaygInfo")
-	public List<Map<String, Object>> getYpzaygInfo() {
-		List<Map<String, Object>> list = affairsService.getYpzaygInfo();
+	public List<Map<String, Object>> getYpzaygInfo(String name) throws Exception {
+		String lname = new String(name.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println("name============="+lname);
+		List<Map<String, Object>> list = affairsService.getYpzaygInfo(lname);
 		return list;
 	}
 
@@ -170,9 +166,10 @@ public class ManagerController {
 		affairsService.addPcInfo(map, eaccount, eaffair);
 		return "true";
 	}
-	
+
 	/**
 	 * 创建用户
+	 * 
 	 * @param map
 	 * @return
 	 * @throws Exception
@@ -180,24 +177,26 @@ public class ManagerController {
 	@ResponseBody
 	@RequestMapping("createUser")
 	public String createUser(@RequestBody Map<String, Object> map) throws Exception {
-		System.out.println("map=-=-=-=-="+map);
+		System.out.println("map=-=-=-=-=" + map);
 		affairsService.createUser(map);
 		return "true";
 	}
-	
+
 	/**
 	 * 获得用户并查询
+	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping("getUserInfo")
-	public List<Map<String, Object>> getUserInfo(String date,String name) throws Exception {
-		System.out.println("date=============="+date+name);
+	public List<Map<String, Object>> getUserInfo(String date, String name) throws Exception {
+		System.out.println("date==============" + date + name);
 		String vname = new String(name.getBytes("ISO8859-1"), "UTF-8");
-		List<Map<String, Object>> list = affairsService.getUserInfo(date,vname);
+		List<Map<String, Object>> list = affairsService.getUserInfo(date, vname);
 		return list;
 	}
+
 	/** -------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================= */
 
 	/**

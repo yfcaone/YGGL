@@ -80,15 +80,13 @@ Ext.onReady(function() {
                 };
                 Ext.apply(store.proxy.extraParams, params);
             }
-		}
+		},
+		
+		pageSize : 10,
+		autoLoad : true
 	});
 	
-	store.load({
-		params : {
-			start : 0,
-			limit : 25
-		}
-	});
+	
 	var grid = new Ext.grid.GridPanel({
 		renderTo : 'grid', 
 		store : store, 

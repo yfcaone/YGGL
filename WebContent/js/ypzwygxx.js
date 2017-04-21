@@ -76,19 +76,15 @@ Ext.onReady(function() {
 
 			  'beforeload': function (store, op, options) {
                 var params = {
-                   // codeDesc: Ext.getCmp('code_desc').getValue()
+                   name: Ext.getCmp('username').getValue()
                 };
                 Ext.apply(store.proxy.extraParams, params);
             }
-		}
+		},
+		pageSize : 10,
+		autoLoad : true
 	});
-	// 鍔犺浇鏁版嵁
-	store.load({
-		params : {
-			start : 0,
-			limit : 25
-		}
-	});
+	
 	var grid = new Ext.grid.GridPanel({
 		renderTo : 'grid', // 娓叉煋浣嶇疆
 		store : store, // 杞崲鍚庣殑鏁版嵁
@@ -120,6 +116,22 @@ Ext.onReady(function() {
 				 }
 			 
             }
+		},'->',{
+
+			xtype : 'textfield',
+			name : 'username',
+			id : 'username',
+			margin:'0 10 0 0',
+			labelWidth : 30,
+			fieldLabel : '姓名'
+		}, {
+			xtype : 'button',
+			text : '查询',
+			iconCls : "Bulletmagnify",
+			handler : function() {
+				var store = Ext.getStore("selected");
+				store.reload();
+			}
 		}],
 	});
 });
