@@ -3,6 +3,9 @@ package cn.yfc.aone.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import cn.yfc.aone.service.AffairsService;
+import cn.yfc.aone.service.TravelService;
 
 @Controller
 @RequestMapping("/yggl")
@@ -24,10 +28,14 @@ public class ManagerController {
 	@Autowired
 	private AffairsService affairsService;
 
+	@Autowired
+	private TravelService travelService;
+	
 	@RequestMapping("/homepage")
 	public ModelAndView homePage(Model model, String username) throws Exception {
 		String cname = new String(username.getBytes("ISO8859-1"), "UTF-8");
 		affairsService.getUsername(cname);
+		travelService.getUsername(cname);
 		model.addAttribute("username", cname);
 		return new ModelAndView("/homepage");
 	}
@@ -68,6 +76,14 @@ public class ManagerController {
 	}
 
 	/**
+	 * 出差信息录入界面
+	 * @return
+	 */
+	@RequestMapping("/ccxxlr")
+	public ModelAndView ccxxlr() {
+		return new ModelAndView("ccxxlr");
+	}
+	/**
 	 * 获取地图经纬度并显示到地图上
 	 * 
 	 * @param model
@@ -102,6 +118,8 @@ public class ManagerController {
 		model.addAttribute("laffair", laffair);
 		return new ModelAndView("logContent");
 	}
+	
+	
 
 	/** ------------------------------------------------------------------------------------------------------------------------------------------- */
 	/**
@@ -197,6 +215,81 @@ public class ManagerController {
 		return list;
 	}
 
+	/**
+	 * 获得城市等级
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getCityGrade")
+	public List<Map<String,Object>> getCityGrade()  {
+		List<Map<String,Object>> list = travelService.getCityGrade();
+		return list;
+	}
+	
+	/**
+	 * 获得城市
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getCity")
+	public List<Map<String,Object>> getCity(String city)  {
+		System.out.println(city);
+		List<Map<String,Object>> list = travelService.getCity(city);
+		return list;
+	}
+	
+	/**
+	 * 获得部门名称
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getDepartment")
+	public List<Map<String,Object>> getDepartment()  {
+		List<Map<String,Object>> list = travelService.getDepartment();
+		return list;
+	}
+	
+	/**
+	 * 获得职务
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getPost")
+	public List<Map<String,Object>> getPost(String department)  {
+		System.out.println(department);
+		List<Map<String,Object>> list = travelService.getPost(department);
+		return list;
+	}
+	
+	/**
+	 * 录入出差信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addTravelInfo")
+	public String  addTravelInfo(HttpServletRequest request)  {
+		String city = request.getParameter("city");
+		String affair_name = request.getParameter("affair_name");
+		String go_date = request.getParameter("go_date");
+		String post_name = request.getParameter("post_name");
+		String job_number = request.getParameter("job_number");
+		System.out.println("------"+city+"------"+affair_name+"------"+go_date+"------"+post_name+"------"+job_number);
+		travelService.addTravelInfo(city,affair_name,go_date,post_name,job_number);
+		return "true";
+	}
+	
+	/**
+	 * 获得出差信息
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getTravelInfo")
+	public List<Map<String,Object>> getTravelInfo()  {
+		List<Map<String,Object>> list = travelService.getTravelInfo();
+		System.out.println("出差信息=========="+list);
+		return list;
+	}
 	/** -------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================= */
 
 	/**
