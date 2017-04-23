@@ -52,4 +52,49 @@ public interface TravelService {
 	 */
 	List<Map<String, Object>> getTravelInfo();
 
+	/**
+	 * 添加请假信息
+	 * @param log_number
+	 * @param start_date
+	 * @param end_date
+	 * @param leave_cause
+	 */
+	void addLeaveInfo(String log_number, String start_date, String end_date, String leave_cause);
+
+	/**
+	 * 获得请假信息
+	 * @return
+	 */
+	List<Map<String, Object>> getLeaveInfo();
+
+	/**
+	 * 添加报销信息
+	 * @param bx_log_number
+	 * @param bx_invoice
+	 * @param bx_maney
+	 */
+	void addReimbursementInfo(String bx_log_number, String bx_invoice, String bx_maney);
+	
+	/**
+	 * 获得报销信息
+	 * @return
+	 */
+	List<Map<String, Object>> getReimbursementInfo();
+
+
+	/**
+	 * 添加借款信息
+	 * @param jk_log_numbers
+	 * @param jk_loan
+	 * @param jk_money 
+	 */
+	void addLoanInfo(String jk_log_numbers, String jk_loan, String jk_money);
+
+	
+	/**
+	 * 获得借款信息
+	 * @return
+	 */
+	List<Map<String, Object>> getloanInfo();
+
 }

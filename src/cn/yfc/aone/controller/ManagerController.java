@@ -1,6 +1,5 @@
 package cn.yfc.aone.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +81,33 @@ public class ManagerController {
 	@RequestMapping("/ccxxlr")
 	public ModelAndView ccxxlr() {
 		return new ModelAndView("ccxxlr");
+	}
+	
+	/**
+	 * 请假信息录入界面
+	 * @return
+	 */
+	@RequestMapping("/qjxxlr")
+	public ModelAndView qjxxlr() {
+		return new ModelAndView("qjxxlr");
+	}
+	
+	/**
+	 * 报销信息录入界面
+	 * @return
+	 */
+	@RequestMapping("/bxxxlr")
+	public ModelAndView bxxxlr() {
+		return new ModelAndView("bxxxlr");
+	}
+	
+	/**
+	 * 出差费用结算界面
+	 * @return
+	 */
+	@RequestMapping("/ccfyjs")
+	public ModelAndView ccfyjs() {
+		return new ModelAndView("ccfyjs");
 	}
 	/**
 	 * 获取地图经纬度并显示到地图上
@@ -287,7 +313,91 @@ public class ManagerController {
 	@RequestMapping("getTravelInfo")
 	public List<Map<String,Object>> getTravelInfo()  {
 		List<Map<String,Object>> list = travelService.getTravelInfo();
-		System.out.println("出差信息=========="+list);
+		return list;
+	}
+	
+	/**
+	 * 添加请假信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addLeaveInfo")
+	public String  addLeaveInfo(HttpServletRequest request)  {
+		String log_number = request.getParameter("log_number");
+		String start_date = request.getParameter("start_date");
+		String end_date = request.getParameter("end_date");
+		String leave_cause = request.getParameter("leave_cause");
+		System.out.println("------"+log_number+"------"+start_date+"------"+end_date+"------"+leave_cause);
+		travelService.addLeaveInfo(log_number,start_date,end_date,leave_cause);
+		return "true";
+	}
+	
+	/**
+	 * 获得请假信息
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getLeaveInfo")
+	public List<Map<String,Object>> getLeaveInfo()  {
+		List<Map<String,Object>> list = travelService.getLeaveInfo();
+		System.out.println("请假信息=========="+list);
+		return list;
+	}
+	
+	/**
+	 * 添加报销信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addReimbursementInfo")
+	public String  addReimbursementInfo(HttpServletRequest request)  {
+		String bx_log_number = request.getParameter("bx_log_number");
+		String bx_invoice = request.getParameter("bx_invoice");
+		String bx_maney = request.getParameter("bx_maney");
+		System.out.println("------"+bx_log_number+"------"+bx_invoice+"------"+bx_maney);
+		travelService.addReimbursementInfo(bx_log_number,bx_invoice,bx_maney);
+		return "true";
+	}
+	
+	/**
+	 * 获得报销信息
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getReimbursementInfo")
+	public List<Map<String,Object>> getReimbursementInfo()  {
+		List<Map<String,Object>> list = travelService.getReimbursementInfo();
+		System.out.println("报销信息=========="+list);
+		return list;
+	}
+	
+	/**
+	 * 添加借款信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addLoanInfo")
+	public String  addLoanInfo(HttpServletRequest request)  {
+		String jk_log_numbers = request.getParameter("jk_log_numbers");
+		String jk_loan = request.getParameter("jk_loan");
+		String jk_money = request.getParameter("jk_money");
+		System.out.println("------"+jk_log_numbers+"------"+jk_loan);
+		travelService.addLoanInfo(jk_log_numbers,jk_loan,jk_money);
+		return "true";
+	}
+	
+	/**
+	 * 获得借款信息
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getloanInfo")
+	public List<Map<String,Object>> getloanInfo()  {
+		List<Map<String,Object>> list = travelService.getloanInfo();
+		System.out.println("借款信息=========="+list);
 		return list;
 	}
 	/** -------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================= */

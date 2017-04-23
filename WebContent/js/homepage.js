@@ -95,11 +95,10 @@ Ext.onReady(function () {
                     root: {
                         children: [
                             {text: '出差信息录入', leaf: true},
-                            {text: '订单信息', leaf: true},
-                            {text: '产品信息', leaf: true},
-                            {text: '客户信息', leaf: true},
-                            {text: 'VIP客户信息', leaf: true},
-                            {text: '销售信息', leaf: true}
+                            {text: '请假信息录入', leaf: true},
+                            {text: '报销借款信息录入', leaf: true},
+                            {text: '出差费用结算', leaf: true},
+                          
                         ]
                     },
                     listeners:{
@@ -110,6 +109,12 @@ Ext.onReady(function () {
                                 //如果没有与当前点击项目id相同的的标签页的话
                             	if(record.data.text=="出差信息录入"){
                             		$('#cenIF').attr("src","ccxxlr.action");
+                            	}else if(record.data.text=="请假信息录入"){
+                            		$('#cenIF').attr("src","qjxxlr.action");
+                            	}else if(record.data.text=="报销借款信息录入"){
+                            		$('#cenIF').attr("src","bxxxlr.action");
+                            	}else if(record.data.text=="出差费用结算"){
+                            		$('#cenIF').attr("src","ccfyjs.action");
                             	}
                             }
                         }
