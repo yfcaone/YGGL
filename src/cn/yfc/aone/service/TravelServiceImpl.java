@@ -1,5 +1,6 @@
 package cn.yfc.aone.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import cn.yfc.aone.dao.TravelDao;
 public class TravelServiceImpl implements TravelService {
 
 	String username;
+	int moneys;
 	@Autowired
 	private TravelDao travelDao;
 
@@ -91,6 +93,43 @@ public class TravelServiceImpl implements TravelService {
 	public List<Map<String, Object>> getloanInfo() {
 		List<Map<String, Object>> list = travelDao.getloanInfo();
 		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getAllInfo(String project_number) {
+		Map<String, Object> map = travelDao.getProjectInfo(project_number);
+		Map<String, Object> map1 = travelDao.getSubsidyInfo(map);
+		List<Map<String, Object>> list = new ArrayList<>();
+		map1.put("P_NAME", map.get("P_NAME"));
+		map1.put("P_DATE", map.get("P_DATE"));
+		map1.put("P_NUMBER", map.get("P_NUMBER"));
+		list.add(map1);
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getWageInfo(String affair_name, String city_name, String start_date,
+			String end_date, String stay_subsidy, String food_subsidy, String traffic_subsidy,String p_number) {
+		moneys=Integer.parseInt(stay_subsidy)+Integer.parseInt(food_subsidy)+Integer.parseInt(traffic_subsidy);
+		List<Map<String, Object>> list = travelDao.getWageInfo(affair_name,city_name,start_date,end_date,stay_subsidy,food_subsidy,traffic_subsidy,p_number,moneys);
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getAllMoneyInfo() {
+		List<Map<String , Object>> lists = new ArrayList<>();
+		List<Map<String, Object>> list = travelDao.getAllMoneyInfo();
+		for (Map<String, Object> map : list) {
+			String  ss =  (String) map.get("R_DAYS");
+			int ssss=  Integer.parseInt(ss);
+			int MONEYS = ssss*moneys;
+			String moneyss= String.valueOf(MONEYS);
+			map.put("MONEYS",moneyss );
+			lists.add(map);
+		}
+		
+		System.out.println("lists的值为========"+lists);
+		return lists;
 	}
 
 }

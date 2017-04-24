@@ -34,7 +34,8 @@ public interface EmployeeDao {
 	 * 添加员工信息
 	 * @param map
 	 * @param username
+	 * @param number 
 	 */
-	void addData(Map<String, Object> map, String username);
+	void addData(Map<String, Object> map, String username, int number);
 
 }

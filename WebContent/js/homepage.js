@@ -313,7 +313,7 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                     					}
                     				}],
                     				columns : [{
-                    							header : '序号',
+                    							header : '工号',
                     							width : '10%',
                     							menuDisabled : true,// 去掉表格下拉排序
                     							dataIndex : 'VID',

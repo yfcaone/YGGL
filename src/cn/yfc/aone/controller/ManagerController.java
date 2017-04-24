@@ -109,6 +109,8 @@ public class ManagerController {
 	public ModelAndView ccfyjs() {
 		return new ModelAndView("ccfyjs");
 	}
+	
+	
 	/**
 	 * 获取地图经纬度并显示到地图上
 	 * 
@@ -400,6 +402,58 @@ public class ManagerController {
 		System.out.println("借款信息=========="+list);
 		return list;
 	}
+	
+	
+	/**
+	 * 获得所有需要信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getAllInfo")
+	public List<Map<String,Object>>  getAllInfo(HttpServletRequest request)  {
+		String project_number = request.getParameter("project_number");
+		List<Map<String,Object>> list = travelService.getAllInfo(project_number);
+		System.out.println("list---------"+list);
+		return list;
+	}
+	
+	/**
+	 * 添加所有工资信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getWageInfo")
+	public List<Map<String,Object>>  getWageInfo(HttpServletRequest request)  {
+		String affair_name = request.getParameter("affair_name");
+		String city_name = request.getParameter("city_name");
+		String start_date = request.getParameter("start_date");
+		String end_date = request.getParameter("end_date");
+		String stay_subsidy = request.getParameter("stay_subsidy");
+		String food_subsidy = request.getParameter("food_subsidy");
+		String p_number = request.getParameter("p_number");
+		String traffic_subsidy = request.getParameter("traffic_subsidy");
+		System.out.println("==============="+affair_name+"=========="+city_name+"============"+start_date+"=============="+
+		stay_subsidy+"========="+food_subsidy+"========="+traffic_subsidy+"=========="+end_date);
+		List<Map<String,Object>> list = travelService.getWageInfo(affair_name,city_name,start_date,end_date,stay_subsidy,food_subsidy,traffic_subsidy,p_number);
+		System.out.println("list---------"+list);
+		return null;
+	}
+	
+	/**
+	 * 获得所有工资信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getAllMoneyInfo")
+	public List<Map<String,Object>>  getAllMoneyInfo()  {
+		List<Map<String,Object>> list = travelService.getAllMoneyInfo();
+		System.out.println("list---------"+list);
+		return list;
+	}
+	
 	/** -------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================= */
 
 	/**
