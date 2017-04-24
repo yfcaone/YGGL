@@ -9,7 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
+<META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+<META HTTP-EQUIV="expires" CONTENT="0">
 <style>
 .nav>li>a {
 	position: relative;
@@ -26,7 +28,6 @@
 <script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="${eam}/kindeditor/kindeditor-all.js"></script>
 <script type="text/javascript" src="${eam}/js/grzwxx.js"></script>
-<script type="text/javascript" src="${eam}/js/edit.js"></script>
 <%-- <script type="text/javascript" src="${eam}/js/zdyzj.js"></script> --%>
 
 </head>

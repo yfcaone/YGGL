@@ -27,7 +27,6 @@ public class EmployeeController {
 	@RequestMapping("/employee")
 	public ModelAndView homePage(Model model, String username) throws Exception {
 		String cname = new String(username.getBytes("ISO8859-1"), "UTF-8");
-		System.out.println("username=-=-=-=-=" + cname);
 		employeeService.getUsername(username);
 		model.addAttribute("username", cname);
 		return new ModelAndView("/Employee");
@@ -39,7 +38,7 @@ public class EmployeeController {
 	}
 
 	/**
-	 * 获取地图经纬度并先死到地图上
+	 * 获取地图经纬度并显示到地图上
 	 * 
 	 * @param model
 	 * @param account
@@ -50,7 +49,6 @@ public class EmployeeController {
 	@RequestMapping("/map")
 	public ModelAndView map(ModelMap model, String account) throws Exception {
 		String cname = new String(account.getBytes("ISO8859-1"), "UTF-8");
-		System.out.println("cname" + cname);
 		Map<String, Object> map = affairsService.getMapjw(cname);
 		String j = (String) map.get("LONGITUDE");
 		String w = (String) map.get("LATITUDE");
@@ -75,7 +73,6 @@ public class EmployeeController {
 	 * @return
 	 * @throws Exception
 	 */
-
 	@RequestMapping("/logContent")
 	public ModelAndView logContent(ModelMap model, String account, String affair) throws Exception {
 		String lname = new String(account.getBytes("ISO8859-1"), "UTF-8");
@@ -95,7 +92,6 @@ public class EmployeeController {
 	@RequestMapping("getZwygInfo")
 	public List<Map<String, Object>> getZwygInfo() throws Exception {
 		List<Map<String, Object>> list = employeeService.getZwygInfo();
-		System.out.println(list);
 		return list;
 	}
 
@@ -109,7 +105,6 @@ public class EmployeeController {
 	@RequestMapping("getSelfInfo")
 	public List<Map<String, Object>> getSelfInfo() throws Exception {
 		List<Map<String, Object>> list = employeeService.getSelfInfo();
-		System.out.println(list);
 		return list;
 	}
 
@@ -118,7 +113,9 @@ public class EmployeeController {
 	 * 
 	 * @param map
 	 * @param account
+	 *            用户名
 	 * @param affair
+	 *            项目名称
 	 * @return
 	 * @throws Exception
 	 */
@@ -143,7 +140,6 @@ public class EmployeeController {
 	public List<Map<String, Object>> getLogContent(String laffair, String lname) throws Exception {
 		String name = new String(lname.getBytes("ISO8859-1"), "UTF-8");
 		String affair = new String(laffair.getBytes("ISO8859-1"), "UTF-8");
-		System.out.println(name + affair);
 		List<Map<String, Object>> list = affairsService.getLogContent(name, affair);
 		return list;
 	}
@@ -158,7 +154,6 @@ public class EmployeeController {
 	@ResponseBody
 	@RequestMapping("addData")
 	public String addData(@RequestBody Map<String, Object> map) throws Exception {
-		System.out.println("添加日志" + map);
 		employeeService.addData(map);
 		return "true";
 	}

@@ -41,8 +41,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public void addData(Map<String, Object> map) {
-		int number = (int)((Math.random()*9+1)*100000);
-		employeeDao.addData(map, username,number);
+		int number = (int) ((Math.random() * 9 + 1) * 100000);
+		employeeDao.addData(map, username, number);
 
 	}
 

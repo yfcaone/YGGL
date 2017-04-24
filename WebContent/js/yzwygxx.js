@@ -105,6 +105,8 @@ Ext.onReady(function() {
 						 win = Ext.create('widget.window',{
 							 titleCollapse :true,
 							 closable:false,
+							 resizable:false,//是否可以改变大小
+	                         draggable:false,//是否可以拖动
 							 width: 1000,
 							 height: 500,
 							 border:0,

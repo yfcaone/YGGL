@@ -93,9 +93,9 @@ public class TravelDaoImpl implements TravelDao {
 
 	@Override
 	public List<Map<String, Object>> getReimbursementInfo() {
-		String sql = "select R.RID,R.LOG_NUMBER,R.RNAME,R.INVOICE_TYPE,R.RMONEY,TO_CHAR(R.RDATE,'YYYY-MM-DD')RDATE from REIMBURSEMENT R";
+		String sql = "select R.RID,R.LOG_NUMBER,R.RNAME,R.INVOICE_TYPE,R.RMONEY,"
+				+ "TO_CHAR(R.RDATE,'YYYY-MM-DD')RDATE from REIMBURSEMENT R";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-		System.out.println("---------------成功2-----------------");
 		return list;
 	}
 
@@ -109,15 +109,16 @@ public class TravelDaoImpl implements TravelDao {
 
 	@Override
 	public List<Map<String, Object>> getloanInfo() {
-		String sql = "SELECT L.LID,L.LOG_NUMBER,L.LNAME,L.LOAN_REASON,L.LOAN_MONEY,TO_CHAR(L.LOAN_DATE,'YYYY-MM-DD')LOAN_DATE,L.ISREPAYMENT FROM LOAN L";
+		String sql = "SELECT L.LID,L.LOG_NUMBER,L.LNAME,L.LOAN_REASON,L.LOAN_MONEY,"
+				+ "TO_CHAR(L.LOAN_DATE,'YYYY-MM-DD')LOAN_DATE,L.ISREPAYMENT FROM LOAN L";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-		System.out.println("---------------成功2-----------------");
 		return list;
 	}
 
 	@Override
 	public Map<String, Object> getProjectInfo(String project_number) {
-		String sql = "select pd.p_number,pd.p_name,to_char(pd.p_date,'yyyy-mm-dd')p_date from project_date pd where pd.p_number = ? ";
+		String sql = "select pd.p_number,pd.p_name,to_char(pd.p_date,'yyyy-mm-dd')p_date from project_date pd"
+				+ " where pd.p_number = ? ";
 		Map<String, Object> map = jdbcTemplate.queryForMap(sql, project_number);
 		return map;
 	}
@@ -140,7 +141,6 @@ public class TravelDaoImpl implements TravelDao {
 		// 更新项目表时间语句
 		String sql1 = " update project_date set  p_date = to_date(?,'yyyy-mm-dd')+1 where p_number = ?";
 		jdbcTemplate.update(sql1, end_date, p_number);
-		System.out.println("------更新成功--------");
 		// 更新工资表语句
 		String sql2 = "update wage set w_endtime = to_date(?,'yyyy-mm-dd')+1,w_money = ? where w_project_number = ?";
 		jdbcTemplate.update(sql2, end_date, moneys, p_number);

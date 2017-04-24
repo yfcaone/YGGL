@@ -109,6 +109,8 @@ Ext.onReady(function() {
 							 win = Ext.create('widget.window',{
 								 titleCollapse :true,
 								 closable:false,
+								 resizable:false,//是否可以改变大小
+		                         	draggable:false,//是否可以拖动
 								 width: 1000,
 								 height: 500,
 								 border:0,
@@ -151,7 +153,6 @@ Ext.onReady(function() {
 			emptyMsg : "没有数据"
 		}),
 			tbar:[{
-
 				xtype : "button",
 				text : "新建",
 				iconCls : "Add",
@@ -159,6 +160,8 @@ Ext.onReady(function() {
 					var win1 = Ext.create('widget.window', {
 						title : '员工在外信息',
 						closable : false,
+						resizable:false,//是否可以改变大小
+                     	draggable:false,//是否可以拖动
 						width : 500,
 						height : 280,
 						bodyPadding : 10,
@@ -184,7 +187,7 @@ Ext.onReady(function() {
 												options) {
 											Ext.Msg.alert("提示", "数据保存成功",
 													function() {
-														var store = Ext.getStore("gridd");
+														var store = Ext.getStore("selected");
 														store.reload();
 														win1.close();
 													});
@@ -196,7 +199,7 @@ Ext.onReady(function() {
 							xtype : "button",
 							text : "取消",
 							handler : function() {
-								win.close();
+								win1.close();
 							}
 						}],
 						modal : true,
@@ -246,7 +249,7 @@ Ext.onReady(function() {
 							}]
 						}]
 					});
-					win.show(this);
+					win1.show(this);
 				}
 			
 			},{
@@ -263,6 +266,8 @@ Ext.onReady(function() {
                         	var win=Ext.create("widget.window",{
                          	title : '编辑日志',
                          	closable:false,
+                         	resizable:false,//是否可以改变大小
+                         	draggable:false,//是否可以拖动
                          	iconCls: "Applicationformedit",
                         	id:'lookupWin',
                         	width : 700,
@@ -288,8 +293,6 @@ Ext.onReady(function() {
             								contentType : "application/json; charset=UTF-8",
             								success : function(form,options) {
             									Ext.Msg.alert("提示", "评测成功",function() {
-            											var store = Ext.getStore("gridd");
-            											store.reload();
             											win.close();
             											});
             								}

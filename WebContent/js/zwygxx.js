@@ -153,6 +153,8 @@ Ext.onReady(function() {
                         	var win=Ext.create("widget.window",{
                          	title : '查看公告',
                          	closable:false,
+                         	resizable:false,//是否可以改变大小
+                         	draggable:false,//是否可以拖动
                         	id:'lookupWin',
                         	width : 700,
                         	height : 400,
@@ -178,7 +180,7 @@ Ext.onReady(function() {
             								contentType : "application/json; charset=UTF-8",
             								success : function(form,options) {
             									Ext.Msg.alert("提示", "评测成功",function() {
-            											var store = Ext.getStore("gridd");
+            											var store = Ext.getStore("selected");
             											store.reload();
             											win.close();
             											});

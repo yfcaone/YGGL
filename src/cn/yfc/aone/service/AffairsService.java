@@ -7,7 +7,8 @@ public interface AffairsService {
 
 	/**
 	 * 获得所有员工信息
-	 * @param lname 
+	 * 
+	 * @param lname
 	 * 
 	 * @return
 	 */
@@ -31,7 +32,8 @@ public interface AffairsService {
 
 	/**
 	 * /** 获取已评在外员工信息
-	 * @param lname 
+	 * 
+	 * @param lname
 	 * 
 	 * @return
 	 */
@@ -56,6 +58,7 @@ public interface AffairsService {
 
 	/**
 	 * 创建用户并查询
+	 * 
 	 * @param date
 	 * @param vname
 	 * @return
@@ -64,6 +67,7 @@ public interface AffairsService {
 
 	/**
 	 * 创建用户
+	 * 
 	 * @param map
 	 */
 	void createUser(Map<String, Object> map);

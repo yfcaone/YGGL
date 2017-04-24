@@ -1,5 +1,6 @@
 Ext.onReady(function () {
      //使用Viewport布局
+	var user = username;
      var mypanel = new Ext.container.Viewport({
          layout: 'border',//表格布局
          items: [
@@ -34,13 +35,25 @@ Ext.onReady(function () {
 	    }, {
 	        xtype: "tbfill"
 	    }, {
-	        pressed: false, text: '刷新'
+	        pressed: false, text: username,
+	        menu:new Ext.menu.Menu({
+                ignoreParentCilcks:true,
+                items:[{
+                    text:'注销',
+                    handler:function(){
+                    	Ext.MessageBox.confirm("提示", "确定注销该用户？");
+                    	window.location.href="../login/login.action";
+                    }
+                },{
+                    text:'退出',
+                    handler:function(){
+                    	Ext.MessageBox.confirm("提示", "确定要退出吗？");
+                    	CloseWebPage()
+                    }
+                }]
+            })
 	    }, {
 	        pressed: false, text: '帮助'
-	    }, {
-	        pressed: false, text: '退出'
-	    }, {
-	        xtype: "combo"
 	    }]
 	});//north panel 编写
 
@@ -169,34 +182,9 @@ var centerWin = Ext.create('Ext.panel.Panel', {
 	    y:0,
 	    width: '80%',
 	    layout: 'fit',
-	    tbar:[{
-            text:'文件',
-            menu:new Ext.menu.Menu({
-                ignoreParentCilcks:true,
-                items:[{
-                    text:'打开'
-                },{
-                    text:'保存'
-                },{
-                    text:'退出'
-                }]
-            })
-        },'-',{
-            text:'编辑'
-        },'-',{
-            text:'处理'
-        },'-',{
-            text:'工程'
-        },'-',{
-            text:'视图'
-        },'-',{
-            text:'窗口'
-        },'-',{
-            text:'帮助'
-        }],
 	    items: [{
         	width:'100%',
-        	html:'<iframe id=cenIF src=zwygxx.action scrolling=yes height="100%" width=100%></iframe>'
+        	html:'<iframe id=cenIF frameborder=0 src=zwygxx.action scrolling=yes height="100%" width=100%></iframe>'
         }]	
 	});
 
@@ -370,6 +358,25 @@ var centerWin = Ext.create('Ext.panel.Panel', {
             text: '与我们练习'
         }]
     });//south panel
- 
+    function CloseWebPage() {
+        if (navigator.userAgent.indexOf("MSIE") > 0) {      //IE浏览器
+            if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+                window.opener = null; 
+                window.close();
+            }
+            else {
+                window.open('', '_top'); window.top.close();
+            }
+        }
+        else if (navigator.userAgent.indexOf("Firefox") > 0) {     //火狐浏览器
+            window.location.href = 'https://www.baidu.com/ ';
+            //window.history.go(-2);
+        }
+        else {                      //其他浏览器
+            window.opener = null; 
+            window.open('', '_self', '');
+            window.close();
+        }
+    }  
    
    

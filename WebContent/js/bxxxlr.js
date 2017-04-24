@@ -83,7 +83,7 @@ Ext.onReady(function(){
 		items:[{
 			xtype:'form',
 			title:'报销信息录入 ',
-			height:260,
+			height:280,
 			items:[{
 				xtype:'panel',
 				layout:'hbox',
@@ -98,7 +98,7 @@ Ext.onReady(function(){
 	                    fieldLabel: '工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号',
 	                    id:'bx_log_number',
 	                    labelWidth: 60,
-	                    margin:'40 0 0 20',
+	                    margin:'50 0 0 20',
 	                    name: 'bx_log_number',
 	                    editable : false,
 					},{
@@ -130,6 +130,7 @@ Ext.onReady(function(){
 	                		var bx_maney = Ext.getCmp('bx_maney').getValue();
 	                    	Ext.Ajax.request({
 	                    		url:'addReimbursementInfo.action',
+	                    		cache:false, 
 	                    		params:{
 	                    				bx_log_number:bx_log_number,
 	                    				bx_invoice:bx_invoice,
@@ -206,6 +207,7 @@ Ext.onReady(function(){
 			xtype:'form',
 			title:'借款信息录入 ',
 			border:0,
+			height:"50%",
 			items:[{
 				xtype:'panel',
 				layout:'hbox',

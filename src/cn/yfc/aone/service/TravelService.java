@@ -126,18 +126,17 @@ public interface TravelService {
 	 * @param stay_subsidy
 	 * @param food_subsidy
 	 * @param traffic_subsidy
-	 * @param p_number 
+	 * @param p_number
 	 * @return
 	 */
-	List<Map<String, Object>> getWageInfo(String affair_name, String city_name,
-			String start_date, String end_date,String stay_subsidy,
-			String food_subsidy, String traffic_subsidy, String p_number);
+	List<Map<String, Object>> getWageInfo(String affair_name, String city_name, String start_date, String end_date,
+			String stay_subsidy, String food_subsidy, String traffic_subsidy, String p_number);
 
 	/**
 	 * 获得所有工资信息
+	 * 
 	 * @return
 	 */
 	List<Map<String, Object>> getAllMoneyInfo();
 
-	
 }

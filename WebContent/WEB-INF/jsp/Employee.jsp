@@ -9,6 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+<META HTTP-EQUIV="expires" CONTENT="0">
 
 <style>
 .nav>li>a {
@@ -21,6 +24,9 @@
 	href="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all.css" />
 <link rel="stylesheet" type="text/css"
 	href="${eam}/ext/resources/css/css/icon.css" />
+		<script type="text/javascript">
+var username='${username}';
+</script>
 <script type="text/javascript" src="${eam}/ext/resources/ext-theme-gray/ext-theme-gray-all-debug.css"></script>
 <script type="text/javascript" src="${eam}/ext/ext-all.js"></script>
 <script type="text/javascript" src="${eam}/ext/jquery-1.11.3.min.js"></script>

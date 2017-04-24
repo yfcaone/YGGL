@@ -15,7 +15,6 @@
         var north = new Ext.panel.Panel({
             region: 'north',
             title: '员工后台管理系统',
-           
             bbar: [{
                 text: '行政办公'
             }, '-', {
@@ -33,13 +32,14 @@
             }, {
                 xtype: "tbfill"
             }, {
-                pressed: false, text: '刷新'
+                pressed: false, text: '您还未登录！'
+            }, {
+                pressed: false, text: '登录',
+                handler: function() {  
+                    login()  
+                 }  
             }, {
                 pressed: false, text: '帮助'
-            }, {
-                pressed: false, text: '退出'
-            }, {
-                xtype: "combo"
             }]
         });//north panel 编写
 
@@ -61,7 +61,6 @@
                 layout: 'accordion',//使用手风琴进行布局
                 items: [{
                     title: '在外员工信息管理',
-                    
                 }, {
                     title: 'VIP客户信息管理',
                 }, {
@@ -88,39 +87,6 @@ var centerWin = Ext.create('Ext.panel.Panel', {
     	    y:0,
     	    width: '80%',
     	    layout: 'fit',
-    	    tbar:[{
-                text:'文件',
-                menu:new Ext.menu.Menu({
-                  /*  ignoreParentCilcks:true,
-                    items:[{
-                        text:'打开'
-                    },{
-                        text:'保存'
-                    },{
-                        text:'退出'
-                    }]*/
-                })
-            },'-',{
-                text:'编辑'
-            },'-',{
-                text:'处理'
-            },'-',{
-                text:'工程'
-            },'-',{
-                text:'视图'
-            },'-',{
-                text:'窗口'
-            },'->',{
-                text:'您还未登录！'
-            },'-',{
-            	xtype:'button',
-                text:'登录',
-                handler: function() {  
-                   login()  
-                }  
-            },'-',{
-                text:'帮助'
-            }],
     	    items: [{
 	        	width:'100%',
 	        	html:'<h3 align="center" >----------请先登录再进行操作！----------</h3>'

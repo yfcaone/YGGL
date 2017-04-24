@@ -17,7 +17,7 @@ public class AffairsDaoImpl implements AffairsDao {
 	public List<Map<String, Object>> selectAll(String condition) {
 		String sql = "SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
 				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete "
-				+ "FROM AFFAIRS a where a.isdeal ='0'"+condition;
+				+ "FROM AFFAIRS a where a.isdeal ='0'" + condition;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 
 		return list;
@@ -43,7 +43,7 @@ public class AffairsDaoImpl implements AffairsDao {
 	public List<Map<String, Object>> getYpzaygInfo(String condition) {
 		String sql = "SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
 				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete "
-				+ "FROM AFFAIRS a where a.isdeal ='1'"+condition;
+				+ "FROM AFFAIRS a where a.isdeal ='1'" + condition;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		return list;
 	}
@@ -52,7 +52,6 @@ public class AffairsDaoImpl implements AffairsDao {
 	public void addPcInfo(Map<String, Object> map, String eaccount, String eaffair, int ave, String username) {
 		String sql = " insert into evaluat values(EVALUAT_S.NEXTVAL,?,?,'" + map.get("kqpc-inputEl") + "'," + "'"
 				+ map.get("rzpc-inputEl") + "','" + map.get("jgpc-inputEl") + "',?,SYSDATE)";
-		System.out.println("ddddddd==============================="+username);
 		jdbcTemplate.update(sql, eaccount, eaffair, username);
 		String sql2 = "update affairs a set a.score=?, a.isdeal='1' where a.account=?and a.affair=? ";
 		jdbcTemplate.update(sql2, ave, eaccount, eaffair);
@@ -62,24 +61,25 @@ public class AffairsDaoImpl implements AffairsDao {
 	@Override
 	public List<Map<String, Object>> getUserInfo(String condition) {
 		String sql = "select v.vid,v.vaccount,v.vpassword,v.vname,to_char(v.vdate,'yyyy-mm-dd HH24:mi:ss')vdate  from VIRTUAL_USER v"
-				+ " where v.vid<>0  "+condition
-				+ " ";
+				+ " where v.vid<>0  " + condition + " ";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		return list;
 	}
 
 	@Override
 	public void createUser(List<Map<String, Object>> map1) {
-		
+
 		for (Map<String, Object> map : map1) {
-			String sql = "insert into VIRTUAL_USER VALUES(VIRTUAL_USER_S.NEXTVAL,'"+map.get("account")+"','"+map.get("number")+"','员工','"+map.get("name")+"',SYSDATE)";
+			String sql = "insert into VIRTUAL_USER VALUES(VIRTUAL_USER_S.NEXTVAL,'" + map.get("account") + "','"
+					+ map.get("number") + "','员工','" + map.get("name") + "',SYSDATE)";
 			jdbcTemplate.update(sql);
 		}
 		for (Map<String, Object> map : map1) {
-			String sql = "insert into users values(USERS_S.NEXTVAL,'"+map.get("account")+"','"+map.get("number")+"','员工','"+map.get("name")+"')";
+			String sql = "insert into users values(USERS_S.NEXTVAL,'" + map.get("account") + "','" + map.get("number")
+					+ "','员工','" + map.get("name") + "')";
 			jdbcTemplate.update(sql);
 		}
-		
+
 	}
 
 }

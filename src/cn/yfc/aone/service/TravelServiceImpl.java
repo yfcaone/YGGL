@@ -109,26 +109,26 @@ public class TravelServiceImpl implements TravelService {
 
 	@Override
 	public List<Map<String, Object>> getWageInfo(String affair_name, String city_name, String start_date,
-			String end_date, String stay_subsidy, String food_subsidy, String traffic_subsidy,String p_number) {
-		moneys=Integer.parseInt(stay_subsidy)+Integer.parseInt(food_subsidy)+Integer.parseInt(traffic_subsidy);
-		List<Map<String, Object>> list = travelDao.getWageInfo(affair_name,city_name,start_date,end_date,stay_subsidy,food_subsidy,traffic_subsidy,p_number,moneys);
+			String end_date, String stay_subsidy, String food_subsidy, String traffic_subsidy, String p_number) {
+		moneys = Integer.parseInt(stay_subsidy) + Integer.parseInt(food_subsidy) + Integer.parseInt(traffic_subsidy);
+		List<Map<String, Object>> list = travelDao.getWageInfo(affair_name, city_name, start_date, end_date,
+				stay_subsidy, food_subsidy, traffic_subsidy, p_number, moneys);
 		return list;
 	}
 
 	@Override
 	public List<Map<String, Object>> getAllMoneyInfo() {
-		List<Map<String , Object>> lists = new ArrayList<>();
+		List<Map<String, Object>> lists = new ArrayList<>();
 		List<Map<String, Object>> list = travelDao.getAllMoneyInfo();
 		for (Map<String, Object> map : list) {
-			String  ss =  (String) map.get("R_DAYS");
-			int ssss=  Integer.parseInt(ss);
-			int MONEYS = ssss*moneys;
-			String moneyss= String.valueOf(MONEYS);
-			map.put("MONEYS",moneyss );
+			String ss = (String) map.get("R_DAYS");
+			int ssss = Integer.parseInt(ss);
+			int MONEYS = ssss * moneys;
+			String moneyss = String.valueOf(MONEYS);
+			map.put("MONEYS", moneyss);
 			lists.add(map);
 		}
-		
-		System.out.println("lists的值为========"+lists);
+
 		return lists;
 	}
 

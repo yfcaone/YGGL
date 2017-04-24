@@ -3,19 +3,19 @@ package cn.yfc.aone.dao;
 import java.util.List;
 import java.util.Map;
 
-import cn.yfc.aone.beans.Affairs;
-
 public interface AffairsDao {
-	
+
 	/**
 	 * 获得所有员工信息
-	 * @param condition 
+	 * 
+	 * @param condition
 	 * @return
 	 */
-	List<Map<String, Object>>  selectAll(String condition);
+	List<Map<String, Object>> selectAll(String condition);
 
 	/**
 	 * 获取地图经纬度并先死到地图上
+	 * 
 	 * @param cname
 	 * @return
 	 */
@@ -23,6 +23,7 @@ public interface AffairsDao {
 
 	/**
 	 * 获得日志内容
+	 * 
 	 * @param name
 	 * @param affair
 	 * @return
@@ -31,23 +32,26 @@ public interface AffairsDao {
 
 	/**
 	 * 获取已评在外员工信息
-	 * @param condition 
+	 * 
+	 * @param condition
 	 * @return
 	 */
 	List<Map<String, Object>> getYpzaygInfo(String condition);
 
 	/**
 	 * 给员工评测
+	 * 
 	 * @param map
-	 * @param eaffair 
-	 * @param eaccount 
-	 * @param ave 
-	 * @param username 
+	 * @param eaffair
+	 * @param eaccount
+	 * @param ave
+	 * @param username
 	 */
 	void addPcInfo(Map<String, Object> map, String eaccount, String eaffair, int ave, String username);
 
 	/**
-	 *  查询用户并查询
+	 * 查询用户并查询
+	 * 
 	 * @param condition
 	 * @return
 	 */
@@ -55,6 +59,7 @@ public interface AffairsDao {
 
 	/**
 	 * 创建用户
+	 * 
 	 * @param map1
 	 */
 	void createUser(List<Map<String, Object>> map1);

@@ -12,10 +12,11 @@ public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	private LoginDao loginDao;
+
 	@Override
-	public Map<String, Object> getLogContent(String username,String password,String role) {
-		
-		Map<String, Object> map1 = loginDao.getLogContent(username,password,role);
+	public Map<String, Object> getLogContent(String username, String password, String role) {
+
+		Map<String, Object> map1 = loginDao.getLogContent(username, password, role);
 		return map1;
 	}
 
