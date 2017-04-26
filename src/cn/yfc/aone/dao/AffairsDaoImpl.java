@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.sun.accessibility.internal.resources.accessibility;
+
 @Repository
 public class AffairsDaoImpl implements AffairsDao {
 
@@ -79,7 +81,21 @@ public class AffairsDaoImpl implements AffairsDao {
 					+ "','员工','" + map.get("name") + "')";
 			jdbcTemplate.update(sql);
 		}
+		for (Map<String, Object> map : map1) {
+			String sql = "insert into staffs values(STAFFS_S.NEXTVAL,'"+ map.get("name") +"','"+
+		map.get("gender")+"',(select distinct(d.department) from DEPARTMENT_POST_INFO d where d.department_code = '"+
+					map.get("department_name")+"'),(select d.dpost from DEPARTMENT_POST_INFO d where d.dpost_code = '"+
+		map.get("post_name")+"' ))";
+			jdbcTemplate.update(sql);
+		}
 
+	}
+
+	@Override
+	public void updateInfo(String iSCOMPLETE,String ID,String ACCOUNT,String AFFAIR) {
+		String sql = "update affairs set iscomplete = ? where ID=?";
+		jdbcTemplate.update(sql,iSCOMPLETE,ID);
+		
 	}
 
 }

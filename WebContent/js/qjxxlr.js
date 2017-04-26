@@ -122,20 +122,18 @@ Ext.onReady(function(){
 		
 		},{
 			xtype:'container',
-			anchor:'7%',
+			anchor:'6%',
 			layout:'hbox',
 			margin:'10 0 10 0',
 			border:0,
 			items:[{
                 xtype: 'container',
-                flex: .16,
+                flex: .14,
                 layout: 'anchor',
                 items: [{
                     xtype:'button',
                     text:'确&nbsp;&nbsp;定',
                     id:'create',
-                    
-                    labelWidth: 60,
                     name: 'create',
                     anchor:'96%',
                     handler:function(){
@@ -158,7 +156,7 @@ Ext.onReady(function(){
                     			
                     			 Ext.Msg.alert("提示","提交成功。"); 
                     		},failure:function(){  
-                                Ext.Msg.alert("错误","与后台联系的时候出了问题。");  
+                                Ext.Msg.alert("错误","请录入相应信息。");  
                             },  
                     	})
                     

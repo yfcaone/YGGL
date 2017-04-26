@@ -102,10 +102,19 @@ public class AffairsServiceImpl implements AffairsService {
 			map2.put("account", ssss);
 			map2.put("number", (int) ((Math.random() * 9 + 1) * 100000));
 			map2.put("name", list.get(j));
+			map2.put("gender", map.get("Gender"));
+			map2.put("department_name", map.get("department_name"));
+			map2.put("post_name", map.get("post_name"));
 			System.out.println("map2"+map2);
 			map1.add(map2);
 		}
 		affairsDao.createUser(map1);
+	}
+
+	@Override
+	public void updateInfo(String iSCOMPLETE,String ID,String ACCOUNT,String AFFAIR) {
+		affairsDao.updateInfo(iSCOMPLETE,ID,ACCOUNT,AFFAIR);
+		
 	}
 
 }

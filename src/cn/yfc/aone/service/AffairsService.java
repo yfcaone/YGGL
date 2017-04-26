@@ -71,4 +71,13 @@ public interface AffairsService {
 	 * @param map
 	 */
 	void createUser(Map<String, Object> map);
+
+	/**
+	 * 更新项目是否完成
+	 * @param iSCOMPLETE
+	 * @param aFFAIR 
+	 * @param aCCOUNT 
+	 * @param iD 
+	 */
+	void updateInfo(String iSCOMPLETE, String iD, String aCCOUNT, String aFFAIR);
 }

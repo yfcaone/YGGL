@@ -12,6 +12,46 @@ Ext.onReady(function () {
         }); 
    });
    
+var genderStore = Ext.create("Ext.data.Store", {
+    fields: ["Name", "Value"],
+    data: [
+        { Name: "男", Value: "男" },
+        { Name: "女", Value: "女" }
+    ]
+});
+
+/**
+ *部门
+ */
+var department=Ext.create('Ext.data.Store',{     
+	 storeId:'specialtyStore',
+   	    fields:['DEPARTMENT_CODE','DEPARTMENT'],
+   	     proxy: {
+      			    type: 'ajax',
+        			url: 'getDepartment.action'
+    		},
+    autoLoad: true
+});
+/**
+ * 职位
+ */
+var post_name=Ext.create('Ext.data.Store',{
+	 storeId:'dqtzStore',
+   	    fields:['DPOST_CODE','DPOST'],
+   	     proxy: {
+      			    type: 'ajax',
+        			url: 'getPost.action'
+    		},
+    		listeners: {  
+       		'beforeload': function (store, op, options) {  
+           		var params = {  
+               	department:Ext.getCmp('department_name').getValue()
+           			};  
+           		Ext.apply(store.proxy.extraParams, params);   
+      						 }  
+   		} ,
+    		autoLoad: false
+});
 //编写 各个模块
 	//编写north panel
 	var north = new Ext.panel.Panel({
@@ -202,12 +242,14 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                     handler:function(){
                     	var win = Ext.create('widget.window', {
                     		title : '创建用户',
-                    		closable : false,
+                    		maximizable : false,  
+                            draggable : false,  
+                            closable : false,  
+                            resizable : false,  
                     		width : 700,
                     		height : 450,
                     		iconCls : "Add",
                     		bodyStyle : "background:#ffffff",
-                    		resizable : false,
                     		constrain : true,
                     		buttons : [{
                     			xtype : "button",
@@ -218,28 +260,92 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                     		}],
                     		modal : true,
                     		items : [{
+                    			xtype:'form',
+                    			id:'form',
+                    			border:0,
+                    			items:[{
                     			xtype : 'form',
-                    			id : 'form',
+                    			id : 'form1',
                     			layout : 'hbox',
                     			border : 0,
                     			items : [{
                     				xtype : 'textfield',
                     				margin:'10 20 10 10 ',
-                    				labelWidth : 50,
-                    				width:300,
+                    				labelWidth : 60,
+                    				
                     				labelAlign : 'left',
-                    				fieldLabel : '姓&nbsp;&nbsp;名',
+                    				fieldLabel : '姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名',
                     				id : 'account',
                     				name : 'account'
                     			},{
+                    				xtype: "combobox",
+                    	            name: "Gender",
+                    	            margin:'10 20 10 10 ',
+                    	            fieldLabel: "性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别",
+                    	            labelWidth : 60,
+                    	            store: genderStore,
+                    	            editable: false,
+                    	            displayField: "Name",
+                    	            valueField: "Value",
+                    	            emptyText: "--请选择--",
+                    	            queryMode: "local"
+                    			}]
+                    		},{
+                    			xtype:'form',
+                    			id:'bmform',
+                    			width:'90%',
+                    			layout:'hbox',
+                    			border:0,
+                    			items:[{
+                					xtype:'combobox',
+                                    fieldLabel: '部门名称',
+                                    id:'department_name',
+                                    labelWidth: 60,
+                                    margin:'10 20 10 10 ',
+                                    store:department,
+                                    valueField:'DEPARTMENT_CODE',
+                                    displayField:'DEPARTMENT',
+                                    emptyText : '--请选择部门--',
+                                    name: 'department_name',
+                                    editable : false,
+                                    anchor:'96%',
+                                    listeners:{
+                         				scope: this,
+                         			 'select': function(){
+                         			 Ext.getCmp("post_name").clearValue();
+                         			post_name.load();}
+                   					}
+                				},{
+                                    xtype:'combobox',
+                                    fieldLabel: '职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务',
+                                    id:'post_name',
+                                    labelWidth: 60,
+                                    margin:'10 20 10 10 ',
+                                    store:post_name,
+                                    valueField:'DPOST_CODE',
+                                    displayField:'DPOST',
+                                    emptyText : '--请选择职务--',
+                                    name: 'post_name',
+                                    editable : false,
+                                    anchor:'96%',
+                                   
+                                }]
+                    		}]
+                    		},{
+                    			xtype:'form',
+                    			id:'addform',
+                    			border:0,
+                    			items:[{
                     				xtype : 'button',
                     				labelWidth : 50,
                     				labelAlign : 'left',
                     				text:'创&nbsp;&nbsp;建',
-                    				margin:'10 20 10 0 ',
+                    				width:60,
+                    				margin:'10 20 10 10 ',
                     				id : 'create',
                     				name : 'create',
                     				handler : function() {
+                    					
                 						var form = Ext.getCmp("form").getForm();
                 						if (form.isValid()) {
                 							var formData = form.getValues();
@@ -302,7 +408,7 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                     				}],
                     				columns : [{
                     							header : '工号',
-                    							width : '10%',
+                    							width : '20%',
                     							menuDisabled : true,// 去掉表格下拉排序
                     							dataIndex : 'VID',
                     							align : "center"
@@ -316,14 +422,14 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                     							header : '用户名',
                     							dataIndex : 'VACCOUNT',
                     							menuDisabled : true,
-                    							width : '25%',
+                    							width : '20%',
                     							align : "center"
                     						},
                     						// 可设置是否为该列进行排序
                     						{
                     							header : '密码',
                     							dataIndex : 'VPASSWORD',
-                    							width : '25%',
+                    							width : '20%',
                     							menuDisabled : true,
                     							align : "center"
                     						},

@@ -1,5 +1,8 @@
 package cn.yfc.aone.controller;
 
+import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFComment;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +27,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import cn.yfc.aone.beans.Money;
+import cn.yfc.aone.beans.Travel;
 import cn.yfc.aone.service.AffairsService;
 import cn.yfc.aone.service.TravelService;
 
 @Controller
 @RequestMapping("/yggl")
 public class ManagerController {
+
+	List<Map<String, Object>> list123;
+	List<Map<String, Object>> moneyList;
 
 	Log log = LogFactory.getLog(this.getClass());
 
@@ -221,7 +239,23 @@ public class ManagerController {
 	@ResponseBody
 	@RequestMapping("createUser")
 	public String createUser(@RequestBody Map<String, Object> map) throws Exception {
+		System.out.println("map-古典风格" + map);
 		affairsService.createUser(map);
+		return "true";
+	}
+
+	/**
+	 * 更新项目是否完成
+	 * 
+	 * @param ISCOMPLETE
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("updateInfo")
+	public String updateInfo(String ID, String ACCOUNT, String AFFAIR, String ISCOMPLETE) throws Exception {
+		System.out.println("士大夫首發式地方" + ISCOMPLETE);
+		affairsService.updateInfo(ISCOMPLETE, ID, ACCOUNT, AFFAIR);
 		return "true";
 	}
 
@@ -314,8 +348,8 @@ public class ManagerController {
 	@ResponseBody
 	@RequestMapping("getTravelInfo")
 	public List<Map<String, Object>> getTravelInfo() {
-		List<Map<String, Object>> list = travelService.getTravelInfo();
-		return list;
+		list123 = travelService.getTravelInfo();
+		return list123;
 	}
 
 	/**
@@ -448,8 +482,193 @@ public class ManagerController {
 	@ResponseBody
 	@RequestMapping("getAllMoneyInfo")
 	public List<Map<String, Object>> getAllMoneyInfo() {
-		List<Map<String, Object>> list = travelService.getAllMoneyInfo();
-		return list;
+		moneyList = travelService.getAllMoneyInfo();
+		return moneyList;
+	}
+
+	/**
+	 * 导出出差信息
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	@ResponseBody
+	@RequestMapping("DaoChu")
+	public String DaoChu() {
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFCellStyle style = wb.createCellStyle();
+		// 设置这些样式
+		style.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
+		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 创建一个居中格式
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("出差信息表");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 声明一个画图的顶级管理器
+	    //HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+	      // 定义注释的大小和位置,详见文档
+	   // HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
+
+		HSSFCell cell = row.createCell((short) 0);
+		cell.setCellValue("序号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 1);
+		cell.setCellValue("项目名称");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 2);
+		cell.setCellValue("工号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 3);
+		cell.setCellValue("姓名");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 4);
+		cell.setCellValue("职务");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 5);
+		cell.setCellValue("出发时间");
+		cell.setCellStyle(style);
+
+		List<Travel> travels = new ArrayList<>();
+		for (Map<String, Object> map : list123) {
+			BigDecimal bd = (BigDecimal) map.get("TID");
+			String id = bd.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+			BigDecimal jn = (BigDecimal) map.get("JOB_NUMBER");
+			String JOB_NUMBER = jn.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+
+			/*
+			 * Date date = (Date) map.get("TDATE"); String TDATE = new
+			 * SimpleDateFormat("yyyy-MM-dd").format(date);
+			 */
+			Travel user = new Travel(id, (String) map.get("TAFFAIR"), JOB_NUMBER, (String) map.get("TNAME"),
+					(String) map.get("DPOST"), (String) map.get("TDATE"));
+			travels.add(user);
+		}
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+
+		for (int i = 0; i < travels.size(); i++) {
+			row = sheet.createRow((int) i + 1);
+			Travel stu = (Travel) travels.get(i);
+			// 第四步，创建单元格，并设置值
+			row.createCell((short) 0).setCellValue(stu.getTID());
+			row.createCell((short) 1).setCellValue(stu.getTAFFAIR());
+			row.createCell((short) 2).setCellValue(stu.getJOB_NUMBER());
+			row.createCell((short) 3).setCellValue(stu.getTNAME());
+			row.createCell((short) 4).setCellValue(stu.getDPOST());
+			row.createCell((short) 5).setCellValue(stu.getTDATE());
+
+		}
+		// 第六步，将文件存到指定位置
+		try {
+			Travel stu = (Travel) travels.get(0);
+			FileOutputStream fout = new FileOutputStream("C:/Users/aone/Desktop/"+stu.getTAFFAIR()+"项目出差人员信息.xls");
+			wb.write(fout);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "true";
+	}
+
+	/**
+	 * 导出出差费用结算信息
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	@ResponseBody
+	@RequestMapping("ExportInfo")
+	public String ExportInfo() {
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFCellStyle style = wb.createCellStyle();
+		// 设置这些样式
+		style.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
+		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 创建一个居中格式
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("出差费用结算表");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+
+		HSSFCell cell = row.createCell((short) 0);
+		cell.setCellValue("序号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 1);
+		cell.setCellValue("工号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 2);
+		cell.setCellValue("姓名");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 3);
+		cell.setCellValue("职务");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 4);
+		cell.setCellValue("天数");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 5);
+		cell.setCellValue("金额");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 6);
+		cell.setCellValue("结算时间");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 7);
+		cell.setCellValue("发放时间");
+		cell.setCellStyle(style);
+
+
+		List<Money> moneys = new ArrayList<>();
+		for (Map<String, Object> map : moneyList) {
+			BigDecimal rid = (BigDecimal) map.get("RID");
+			String RID = rid.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+			BigDecimal jn = (BigDecimal) map.get("R_JOB_NUMBER");
+			String R_JOB_NUMBER = jn.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+			BigDecimal rd = (BigDecimal) map.get("R_DAYS");
+			String R_DAYS = jn.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+			/*
+			 * Date date = (Date) map.get("TDATE"); String TDATE = new
+			 * SimpleDateFormat("yyyy-MM-dd").format(date);
+			 */
+			Money money = new Money(RID,R_JOB_NUMBER,(String)map.get("R_JOB_NAME"),(String)map.get("R_POST"),R_DAYS,(String)map.get("MONEYS"),(String)map.get("R_ENDTIME"),(String)map.get("R_RELEASETIME"));
+			moneys.add(money);
+		}
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+
+		for (int i = 0; i < moneys.size(); i++) {
+			row = sheet.createRow((int) i + 1);
+			Money money = (Money) moneys.get(i);
+			// 第四步，创建单元格，并设置值
+			row.createCell((short) 0).setCellValue(money.getRID());
+			row.createCell((short) 1).setCellValue(money.getR_JOB_NUMBER());
+			row.createCell((short) 2).setCellValue(money.getR_JOB_NAME());
+			row.createCell((short) 3).setCellValue(money.getR_POST());
+			row.createCell((short) 4).setCellValue(money.getR_DAYS());
+			row.createCell((short) 5).setCellValue(money.getMONEYS());
+			row.createCell((short) 6).setCellValue(money.getR_ENDTIME());
+			row.createCell((short) 7).setCellValue(money.getR_RELEASETIME());
+
+		}
+		// 第六步，将文件存到指定位置
+		try {
+			FileOutputStream fout = new FileOutputStream("C:/Users/aone/Desktop/出差费用结算信息.xls");
+			wb.write(fout);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "true";
 	}
 
 	/** -------=++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================= */

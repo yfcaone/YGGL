@@ -64,4 +64,13 @@ public interface AffairsDao {
 	 */
 	void createUser(List<Map<String, Object>> map1);
 
+	/**
+	 * 更新项目是否完成
+	 * @param iSCOMPLETE
+	 * @param aFFAIR 
+	 * @param aCCOUNT 
+	 * @param iD 
+	 */
+	void updateInfo(String iSCOMPLETE, String iD, String aCCOUNT, String aFFAIR);
+
 }

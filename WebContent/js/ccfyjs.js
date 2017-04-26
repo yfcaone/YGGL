@@ -335,7 +335,19 @@ Ext.onReady(function(){
 					text : '导出',
 					iconCls : "Bulletmagnify",
 					handler : function() {
-						
+
+						Ext.Ajax.request({
+                    		url:'ExportInfo.action',
+                    		
+                    		success:function(response){
+                    			
+                    			
+                    			 Ext.Msg.alert("提示","提交成功。"); 
+                    		},failure:function(){  
+                                Ext.Msg.alert("错误","与后台联系的时候出了问题。");  
+                            },  
+                    	})
+					
 					}
 				}],
 				columns : [{

@@ -1,10 +1,19 @@
 Ext.onReady(function() {
-
+	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+        clicksToEdit: 1,
+        id:'cellEditing'
+    });
+	var combostore = new Ext.data.ArrayStore({
+		                fields: ['code_desc', 'code_desc'],
+		               data: [['完成', '完成'], ['未完成', '未完成']]
+	});
 	// 杞崲鍘熷鏁版嵁涓篍XT鍙互鏄剧ず鐨勬暟鎹�
 	var store = new Ext.data.ArrayStore({
 
 		id : 'selected',
-		fields : [ {
+		fields : [{
+			name : 'ID'
+		}, {
 			name : 'ACCOUNT'
 		}, {
 			name : 'AFFAIR'
@@ -75,12 +84,27 @@ Ext.onReady(function() {
 	}, {
 		header : '管理员',
 		width : "10%",
+		
 		dataIndex : 'MANAGER',
 		align : 'center',
 	}, {
 		header : '是否完成',
 		width : "10%",
 		dataIndex : 'ISCOMPLETE',
+		editor: {
+			xtype:'combobox',
+        	store:combostore,
+         	valueField:'code_desc',
+         	displayField:'code_desc',
+         	allowBlank: false,
+         	editable :false
+				},
+/*		renderer:function(value, cellmeta, record, rowIndex, columnIndex, store){
+if(value=='完成'){
+	
+return "完成";	
+}
+		},*/
 		align : 'center',
 		flex : 1
 	} ];
@@ -91,6 +115,7 @@ Ext.onReady(function() {
 		
 		id : 'gridd',
 		columnLines: true,
+		plugins: [cellEditing],
 		columns : columns, // 鏄剧ず鍒�
 		stripeRows : true, // 鏂戦┈绾挎晥鏋�
 		loadMask : true, // 鏄剧ず閬僵鍜屾彁绀哄姛鑳�,鍗冲姞杞絃oading鈥︹��
@@ -304,6 +329,36 @@ Ext.onReady(function() {
 				 }else{
 					 Ext.Msg.alert(
 							 "提示", "请选择一行记录进行查看")
+				 }
+			 
+            }
+		},{
+			xtype:'button',
+			text: "保存",
+            iconCls: "Applicationformmagnify",
+            handler: function () {
+				 var selectedI = Ext.getCmp("gridd").getSelectionModel();
+				 if(selectedI.selected.items && selectedI.selected.items.length>0){
+					 var rec = selectedI.selected.items[0]["data"];
+					 Ext.Ajax.request({     
+					       url:'updateInfo.action',  
+					       params:{  
+					    	   ID:rec['ID'],
+					    	   ACCOUNT:rec['ACCOUNT'],
+					    	   AFFAIR:rec['AFFAIR'],
+					    	   ISCOMPLETE:rec['ISCOMPLETE']  
+					        },  
+					        success: function(resp,opts) {   
+					                 Ext.Msg.alert('提示','保存成功！');   
+					                     },   
+					                     failure: function(resp,opts) {   
+					                             Ext.Msg.alert('错误', respText.error);   
+					                      }     
+					         
+					      });
+				 }else{
+					 Ext.Msg.alert(
+							 "提示", "请选择一行记录进行保存")
 				 }
 			 
             }
