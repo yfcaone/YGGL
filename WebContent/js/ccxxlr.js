@@ -6,6 +6,8 @@ Ext.onReady(function(){
 		fields : [ {
 			name : 'TID'
 		}, {
+			name : 'P_NUMBER'
+		}, {
 			name : 'TAFFAIR'
 		}, {
 			name : 'JOB_NUMBER'
@@ -331,28 +333,34 @@ Ext.onReady(function(){
 				}],
 				columns : [{
 							header : '序号',
-							width : '10%',
+							width : '7%',
 							menuDisabled : true,// 去掉表格下拉排序
 							dataIndex : 'TID',
+							align : "center"
+						},{
+							header : '项目编号',
+							width : '14%',
+							menuDisabled : true,// 去掉表格下拉排序
+							dataIndex : 'P_NUMBER',
 							align : "center"
 						}, {
 							header : '项目名称',
 							dataIndex : 'TAFFAIR',
 							menuDisabled : true,
-							width : '30%',
+							width : '21%',
 							align : "center"
 						},{
 							header : '工号',
 							dataIndex : 'JOB_NUMBER',
 							menuDisabled : true,
-							width : '15%',
+							width : '14%',
 							align : "center"
 						},
 						// 可设置是否为该列进行排序
 						{
 							header : '姓名',
 							dataIndex : 'TNAME',
-							width : '15%',
+							width : '14%',
 							menuDisabled : true,
 							align : "center"
 						},

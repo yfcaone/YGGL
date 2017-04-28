@@ -349,6 +349,7 @@ public class ManagerController {
 	@RequestMapping("getTravelInfo")
 	public List<Map<String, Object>> getTravelInfo() {
 		list123 = travelService.getTravelInfo();
+		System.out.println("list123"+list123);
 		return list123;
 	}
 

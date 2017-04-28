@@ -46,21 +46,22 @@ public class TravelDaoImpl implements TravelDao {
 
 	@Override
 	public void addTravelInfo(String city, String affair_name, String go_date, String post_name, String job_number,
-			String username) {
-
+			String username,int number) {
+		String sql1 = " insert into project_date VALUES(PROJECT_DATE_S.NEXTVAL,?,?,to_date(?,'yyyy-mm-dd'))";
+		jdbcTemplate.update(sql1,number,affair_name,go_date.substring(0, 10));
 		String sql = "INSERT INTO TRAVEL_INFO VALUES (TRAVEL_INFO_S.NEXTVAL,?," + "TO_DATE(?,'YYYY-MM-DD'),?,"
 				+ "(select i.dpost from department_post_info i where i.dpost_code = ? ),"
 				+ "(select c.city from citys c where c.ci_code = ?),?,"
-				+ "SYSDATE,(select s.sname from  staffs s where s.job_number = ? ))";
+				+ "SYSDATE,(select s.sname from  staffs s where s.job_number = ? ),?)";
 		jdbcTemplate.update(sql, affair_name, go_date.substring(0, 10), job_number, post_name, city, username,
-				job_number);
+				job_number,number);
 
 	}
 
 	@Override
 	public List<Map<String, Object>> getTravelInfo() {
 		String sql = "select t.tid, t.taffair,t.job_number,t.tname,t.dpost,"
-				+ "to_char(t.tdate,'yyyy-mm-dd')tdate from travel_info t";
+				+ "to_char(t.tdate,'yyyy-mm-dd')tdate,t.p_number from travel_info t";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		return list;
 	}
@@ -146,7 +147,7 @@ public class TravelDaoImpl implements TravelDao {
 		jdbcTemplate.update(sql2, end_date, moneys, p_number);
 		// 添加工资表数据
 		String sql3 = "insert into wage (wid,w_project_number,w_project_name,w_starttime)values "
-				+ "(WAGE_S.NEXTVAL,?,?,to_date(?,'yyyy-mm-dd'))";
+				+ "(WAGE_S.NEXTVAL,?,?,to_date(?,'yyyy-mm-dd')+1)";
 		jdbcTemplate.update(sql3, p_number, affair_name, end_date);
 		// 获得项目员工及休假天数
 		String sql4 = "select s.tname,s.dpost,nvl(ss.log_number,s.job_number)job_number , nvl(ss.days,0)days"

@@ -43,7 +43,8 @@ public class TravelServiceImpl implements TravelService {
 
 	@Override
 	public void addTravelInfo(String city, String affair_name, String go_date, String post_name, String job_number) {
-		travelDao.addTravelInfo(city, affair_name, go_date, post_name, job_number, username);
+		int number = (int) ((Math.random() * 9 + 1) * 100000);
+		travelDao.addTravelInfo(city, affair_name, go_date, post_name, job_number, username,number);
 
 	}
 
@@ -55,6 +56,7 @@ public class TravelServiceImpl implements TravelService {
 
 	@Override
 	public List<Map<String, Object>> getTravelInfo() {
+		
 		List<Map<String, Object>> list = travelDao.getTravelInfo();
 		return list;
 	}

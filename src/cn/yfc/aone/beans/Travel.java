@@ -1,6 +1,5 @@
 package cn.yfc.aone.beans;
 
-import java.util.*;
 
 public class Travel {
 	

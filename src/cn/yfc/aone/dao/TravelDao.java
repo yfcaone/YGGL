@@ -43,9 +43,10 @@ public interface TravelDao {
 	 * @param post_name
 	 * @param job_number
 	 * @param username
+	 * @param number 
 	 */
 	void addTravelInfo(String city, String affair_name, String go_date, String post_name, String job_number,
-			String username);
+			String username, int number);
 
 	/**
 	 * 获得出差信息

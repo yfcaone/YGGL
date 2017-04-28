@@ -374,7 +374,9 @@ var centerWin = Ext.create('Ext.panel.Panel', {
                     			items : [{
                     				xtype : 'grid',
                     				columnLines : true,
+                    				overflowY:'auto',
                     				id : "gridd",
+                    				height:263,
                     				width : "100%",
                     				store : store1,
                     				tbar : [{

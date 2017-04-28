@@ -62,8 +62,8 @@ public class AffairsDaoImpl implements AffairsDao {
 
 	@Override
 	public List<Map<String, Object>> getUserInfo(String condition) {
-		String sql = "select v.vid,v.vaccount,v.vpassword,v.vname,to_char(v.vdate,'yyyy-mm-dd HH24:mi:ss')vdate  from VIRTUAL_USER v"
-				+ " where v.vid<>0  " + condition + " ";
+		String sql = "select s.job_number as vid,v.vaccount,v.vpassword,v.vname,to_char(v.vdate,'yyyy-mm-dd HH24:mi:ss')vdate  from VIRTUAL_USER v,staffs s "
+				+ " where v.vid<>0 and v.vname = s.sname  " + condition + " ";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		return list;
 	}
@@ -85,7 +85,7 @@ public class AffairsDaoImpl implements AffairsDao {
 			String sql = "insert into staffs values(STAFFS_S.NEXTVAL,'"+ map.get("name") +"','"+
 		map.get("gender")+"',(select distinct(d.department) from DEPARTMENT_POST_INFO d where d.department_code = '"+
 					map.get("department_name")+"'),(select d.dpost from DEPARTMENT_POST_INFO d where d.dpost_code = '"+
-		map.get("post_name")+"' ))";
+		map.get("post_name")+"'),sysdate)";
 			jdbcTemplate.update(sql);
 		}
 

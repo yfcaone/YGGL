@@ -46,9 +46,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 				+ "',to_date('" + map.get("starttime") + "','yyyy-mm-dd'),to_date('" + map.get("endtime")
 				+ "','yyyy-mm-dd'),'" + map.get("manager") + "','未完成',?,SYSDATE,'0')";
 		jdbcTemplate.update(sql, username);
-		String sql1 = " insert into project_date VALUES(PROJECT_DATE_S.NEXTVAL,?,'" + map.get("affair") + "',to_date('"
+		/*String sql1 = " insert into project_date VALUES(PROJECT_DATE_S.NEXTVAL,?,'" + map.get("affair") + "',to_date('"
 				+ map.get("starttime") + "','yyyy-mm-dd'))";
-		jdbcTemplate.update(sql1, number);
+		jdbcTemplate.update(sql1, number);*/
 		String sql2 = "insert into wage (wid,w_project_number,w_project_name,w_starttime)values (WAGE_S.NEXTVAL,?,'"
 				+ map.get("affair") + "',to_date('" + map.get("starttime") + "','yyyy-mm-dd'))";
 		jdbcTemplate.update(sql2, number);
