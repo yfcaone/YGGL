@@ -9,9 +9,14 @@ public interface AffairsDao {
 	 * 获得所有员工信息
 	 * 
 	 * @param condition
+	 * @param end 
+	 * @param begin 
+	 * @param limit 
+	 * @param start 
+	 * @param page 
 	 * @return
 	 */
-	List<Map<String, Object>> selectAll(String condition);
+	List<Map<String, Object>> selectAll(String condition, int begin, int end );
 
 	/**
 	 * 获取地图经纬度并先死到地图上
@@ -72,5 +77,21 @@ public interface AffairsDao {
 	 * @param iD 
 	 */
 	void updateInfo(String iSCOMPLETE, String iD, String aCCOUNT, String aFFAIR);
+
+	/**
+	 * 获得所有未评价人信息
+	 * @param condition
+	 * @return
+	 */
+	List<Map<String, Object>> selectAllInfo(String condition);
+
+	/**
+	 * 获得所有已评员工数据
+	 * @param condition
+	 * @param begin
+	 * @param end
+	 * @return
+	 */
+	List<Map<String, Object>> getYpzaygAllInfo(String condition, int begin, int end);
 
 }

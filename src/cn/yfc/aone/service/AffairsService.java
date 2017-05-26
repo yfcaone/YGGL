@@ -9,10 +9,13 @@ public interface AffairsService {
 	 * 获得所有员工信息
 	 * 
 	 * @param lname
+	 * @param limit 
+	 * @param start 
+	 * @param page 
 	 * 
 	 * @return
 	 */
-	List<Map<String, Object>> selectAll(String lname);
+	List<Map<String, Object>> selectAll(String lname, int page, int start, int limit);
 
 	/**
 	 * 获取地图经纬度并先死到地图上
@@ -80,4 +83,21 @@ public interface AffairsService {
 	 * @param iD 
 	 */
 	void updateInfo(String iSCOMPLETE, String iD, String aCCOUNT, String aFFAIR);
+
+	/**
+	 * 获得未评价人所有数据
+	 * @param lname
+	 * @return
+	 */
+	List<Map<String, Object>> selectAllInfo(String lname);
+
+	/**
+	 * 获得所有已评员工信息
+	 * @param lname
+	 * @param page
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	List<Map<String, Object>> getYpzaygAllInfo(String lname, int page, int start, int limit);
 }

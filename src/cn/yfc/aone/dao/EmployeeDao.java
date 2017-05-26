@@ -42,4 +42,28 @@ public interface EmployeeDao {
 	 */
 	void addData(Map<String, Object> map, String username, int number);
 
+	/**
+	 * 判断密码是否正确
+	 * @param username
+	 * @param old_pwd
+	 * @return
+	 */
+	int getJudgmentPwd(String username, String old_pwd);
+
+	/**
+	 * 修改用户密码
+	 * @param new_pwd
+	 * @param old_pwd 
+	 */
+	void updatePwd(String new_pwd, String old_pwd);
+
+	/**
+	 * 获得用户名中文
+	 * @param cname
+	 * @return
+	 */
+	Map<String, Object> getName(String cname);
+
+	
+
 }

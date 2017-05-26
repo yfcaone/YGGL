@@ -31,8 +31,7 @@ public class LoginController {
 	 */
 	@ResponseBody
 	@RequestMapping("getLogin")
-	public String getLogContent(Model model,
-			/* @RequestBody Map<String, Object> map, */String username, String password, String role) throws Exception {
+	public String getLogContent(Model model,String username, String password, String role) throws Exception {
 		Map<String, Object> map2 = loginService.getLogContent(username, password, role);
 		System.out.println("username   " + username);
 		System.out.println("password    " + password);

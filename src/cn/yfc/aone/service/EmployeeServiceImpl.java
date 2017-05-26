@@ -46,4 +46,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	}
 
+	@Override
+	public int getJudgmentPwd(String old_pwd) {
+		int i = employeeDao.getJudgmentPwd(username,old_pwd);
+		return i;
+	}
+
+	@Override
+	public void updatePwd(String new_pwd, String old_pwd) {
+		employeeDao.updatePwd(new_pwd,old_pwd);
+		
+	}
+
+	@Override
+	public Map<String, Object> getName(String cname) {
+		Map<String, Object> map = employeeDao.getName(cname);
+		return map;
+	}
+
 }

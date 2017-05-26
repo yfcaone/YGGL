@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
+
 import cn.yfc.aone.dao.AffairsDao;
 
 @Service
@@ -19,12 +21,14 @@ public class AffairsServiceImpl implements AffairsService {
 	private AffairsDao affairsDao;
 
 	@Override
-	public List<Map<String, Object>> selectAll(String lname) {
+	public List<Map<String, Object>> selectAll(String lname,int page, int start, int limit) {
+		int begin = (page - 1) * limit + 1;
+		int end = page * limit;
 		String condition = "";
 		if (lname.length() > 0) {
 			condition = condition + " and a.account = '" + lname + "'";
 		}
-		List<Map<String, Object>> list = affairsDao.selectAll(condition);
+		List<Map<String, Object>> list = affairsDao.selectAll(condition,begin,end);
 		return list;
 	}
 
@@ -100,7 +104,7 @@ public class AffairsServiceImpl implements AffairsService {
 			
 			Map<String, Object> map2 = new HashMap<>();
 			map2.put("account", ssss);
-			map2.put("number", (int) ((Math.random() * 9 + 1) * 100000));
+			map2.put("number", 111111);
 			map2.put("name", list.get(j));
 			map2.put("gender", map.get("Gender"));
 			map2.put("department_name", map.get("department_name"));
@@ -113,8 +117,31 @@ public class AffairsServiceImpl implements AffairsService {
 
 	@Override
 	public void updateInfo(String iSCOMPLETE,String ID,String ACCOUNT,String AFFAIR) {
+		System.out.println("结果是"+iSCOMPLETE+ID+ACCOUNT +AFFAIR );
 		affairsDao.updateInfo(iSCOMPLETE,ID,ACCOUNT,AFFAIR);
 		
+	}
+
+	@Override
+	public List<Map<String, Object>> selectAllInfo(String lname) {
+		String condition = "";
+		if (lname.length() > 0) {
+			condition = condition + " and a.account = '" + lname + "'";
+		}
+		List<Map<String, Object>> list = affairsDao.selectAllInfo(condition);
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getYpzaygAllInfo(String lname, int page, int start, int limit) {
+		int begin = (page - 1) * limit + 1;
+		int end = page * limit;
+		String condition = "";
+		if (lname.length() > 0) {
+			condition = condition + " and a.account = '" + lname + "'";
+		}
+		List<Map<String, Object>> list = affairsDao.getYpzaygAllInfo(condition,begin,end);
+		return list;
 	}
 
 }

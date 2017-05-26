@@ -1,44 +1,48 @@
 package cn.yfc.aone.beans;
 
-
 public class Travel {
-	
-private String TID;
+
+	private String TID;
+	private String P_NUMBER;
 	private String TAFFAIR;
 	private String JOB_NUMBER;
 	private String TNAME;
 	private String DPOST;
 	private String TDATE;
 
-	
-	
-	
-	public Travel( String tID,String tAFFAIR, String jOB_NUMBER, String tNAME, String dPOST,String tDATE) {
+	public Travel(String tID, String p_NUMBER, String tAFFAIR, String jOB_NUMBER, String tNAME, String dPOST,
+			String tDATE) {
 		super();
 		TID = tID;
+		setP_NUMBER(p_NUMBER);
 		TAFFAIR = tAFFAIR;
 		setJOB_NUMBER(jOB_NUMBER);
 		TNAME = tNAME;
 		DPOST = dPOST;
 		setTDATE(tDATE);
-	
+
 	}
 
 	public String getTAFFAIR() {
 		return TAFFAIR;
 	}
+
 	public void setTAFFAIR(String tAFFAIR) {
 		TAFFAIR = tAFFAIR;
 	}
+
 	public String getTNAME() {
 		return TNAME;
 	}
+
 	public void setTNAME(String tNAME) {
 		TNAME = tNAME;
 	}
+
 	public String getDPOST() {
 		return DPOST;
 	}
+
 	public void setDPOST(String dPOST) {
 		DPOST = dPOST;
 	}
@@ -67,6 +71,12 @@ private String TID;
 		TDATE = tDATE;
 	}
 
+	public String getP_NUMBER() {
+		return P_NUMBER;
+	}
 
-	
+	public void setP_NUMBER(String p_NUMBER) {
+		P_NUMBER = p_NUMBER;
+	}
+
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.sun.accessibility.internal.resources.accessibility;
 
 @Repository
 public class AffairsDaoImpl implements AffairsDao {
@@ -16,18 +15,22 @@ public class AffairsDaoImpl implements AffairsDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public List<Map<String, Object>> selectAll(String condition) {
-		String sql = "SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
+	public List<Map<String, Object>> selectAll(String condition,int begin, int end) {
+		String sql = "SELECT * FROM(SELECT ROWNUM RN,g.* FROM "
+				+ "(SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
 				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete "
-				+ "FROM AFFAIRS a where a.isdeal ='0'" + condition;
-		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+				+ "FROM AFFAIRS a where a.isdeal ='0'"+ condition
+				+ " group by  a.id,a.account,a.affair,a.lacale,a.startime,a.endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete  )g ) "
+				+ "where RN>=? and RN<=?" ;
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,begin,end);
 
 		return list;
 	}
 
 	@Override
 	public Map<String, Object> getMapjw(String cname) {
-		String sql = "select c.longitude,c.latitude from coordinate c where c.cname =?";
+		String sql = "SELECT C.LONGITUDE,C.LATITUDE FROM COORDINATE C WHERE C.CDATE = (SELECT MAX(CDATE)"
+				+ " FROM COORDINATE WHERE CNAME = ?)";
 		Map<String, Object> map = jdbcTemplate.queryForMap(sql, cname);
 
 		return map;
@@ -62,7 +65,8 @@ public class AffairsDaoImpl implements AffairsDao {
 
 	@Override
 	public List<Map<String, Object>> getUserInfo(String condition) {
-		String sql = "select s.job_number as vid,v.vaccount,v.vpassword,v.vname,to_char(v.vdate,'yyyy-mm-dd HH24:mi:ss')vdate  from VIRTUAL_USER v,staffs s "
+		String sql = "select s.job_number as vid,v.vaccount,v.vpassword,v.vname,to_char(v.vdate,'yyyy-mm-dd HH24:mi:ss')vdate "
+				+ " from VIRTUAL_USER v,staffs s "
 				+ " where v.vid<>0 and v.vname = s.sname  " + condition + " ";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		return list;
@@ -96,6 +100,29 @@ public class AffairsDaoImpl implements AffairsDao {
 		String sql = "update affairs set iscomplete = ? where ID=?";
 		jdbcTemplate.update(sql,iSCOMPLETE,ID);
 		
+	}
+
+	@Override
+	public List<Map<String, Object>> selectAllInfo(String condition) {
+		String sql = "SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
+				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete "
+				+ "FROM AFFAIRS a where a.isdeal ='0'" + condition;
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getYpzaygAllInfo(String condition, int begin, int end) {
+		String sql = "SELECT * FROM(SELECT ROWNUM RN,g.* FROM "
+				+ "(SELECT a.id,a.account,a.affair,a.lacale,to_char(a.startime,'yyyy-mm-dd')starttime,"
+				+ "to_char(a.endtime,'yyyy-mm-dd')endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete"
+				+ " FROM AFFAIRS a where a.isdeal ='1'"+ condition
+				+ " group by a.id,a.account,a.affair,a.lacale,a.startime,"
+				+ " a.endtime,a.manager,a.detail,a.score,a.isdeal,a.iscomplete )g )"
+				+ " where RN>=? and RN<=?" ;
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,begin,end);
+		return list;
 	}
 
 }

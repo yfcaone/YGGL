@@ -1,7 +1,10 @@
 package cn.yfc.aone.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import cn.yfc.aone.service.EmployeeService;
 @RequestMapping("/employee")
 public class EmployeeController {
 
+	private String ccname;
 	@Autowired
 	private EmployeeService employeeService;
 	@Autowired
@@ -27,8 +31,11 @@ public class EmployeeController {
 	@RequestMapping("/employee")
 	public ModelAndView homePage(Model model, String username) throws Exception {
 		String cname = new String(username.getBytes("ISO8859-1"), "UTF-8");
+		Map<String, Object> map = employeeService.getName(cname);
+		String ccname = (String) map.get("UNAME");
+		this.ccname = ccname;
 		employeeService.getUsername(username);
-		model.addAttribute("username", cname);
+		model.addAttribute("username", ccname);
 		return new ModelAndView("/Employee");
 	}
 
@@ -63,7 +70,9 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("/grzwxx")
-	public ModelAndView grzwxx() {
+	public ModelAndView grzwxx(Model model) {
+		System.out.println("ccname++" + ccname);
+		model.addAttribute("username", ccname);
 		return new ModelAndView("/grzwxx");
 	}
 
@@ -109,6 +118,21 @@ public class EmployeeController {
 	}
 
 	/**
+	 * 更新项目是否完成
+	 * 
+	 * @param ISCOMPLETE
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("updateInfo")
+	public String updateInfo(String ID, String ACCOUNT, String AFFAIR, String ISCOMPLETE) throws Exception {
+		System.out.println("士大夫首發式地方" + ISCOMPLETE);
+		affairsService.updateInfo(ISCOMPLETE, ID, ACCOUNT, AFFAIR);
+		return "true";
+	}
+
+	/**
 	 * 添加日志
 	 * 
 	 * @param map
@@ -127,6 +151,40 @@ public class EmployeeController {
 		System.out.println(map + eaccount + eaffair);
 		employeeService.addLogInfo(map, eaccount, eaffair);
 		return "true";
+	}
+
+	/**
+	 * 修改密码
+	 * 
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("updatePwd")
+	public Map<String, Object> updatePwd(HttpServletRequest request) throws Exception {
+		String old_pwd = request.getParameter("old_pwd");
+		String new_pwd = request.getParameter("new_pwd");
+		String sure_new_pwd = request.getParameter("sure_new_pwd");
+		System.out.println("修改密码" + old_pwd + new_pwd + sure_new_pwd);
+		int i = employeeService.getJudgmentPwd(old_pwd);
+		System.out.println("i的值为" + i);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		if (i == 1) {
+			if (new_pwd.equals(sure_new_pwd)) {
+				employeeService.updatePwd(new_pwd, old_pwd);
+				map2.put("sure", "密码修改成功");
+				return map2;
+			} else {
+				map2.put("sure", "确认密码不对");
+				return map2;
+			}
+		} else {
+			map2.put("sure", "原密码不正确");
+			return map2;
+		}
+
+		// employeeService.updatePwd(map);
 	}
 
 	/**

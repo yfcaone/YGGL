@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
 
@@ -49,9 +50,38 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		/*String sql1 = " insert into project_date VALUES(PROJECT_DATE_S.NEXTVAL,?,'" + map.get("affair") + "',to_date('"
 				+ map.get("starttime") + "','yyyy-mm-dd'))";
 		jdbcTemplate.update(sql1, number);*/
-		String sql2 = "insert into wage (wid,w_project_number,w_project_name,w_starttime)values (WAGE_S.NEXTVAL,?,'"
-				+ map.get("affair") + "',to_date('" + map.get("starttime") + "','yyyy-mm-dd'))";
-		jdbcTemplate.update(sql2, number);
+		/*String sql2 = "insert into wage (wid,w_project_number,w_project_name,w_starttime)values (WAGE_S.NEXTVAL,?,'"
+				+ map.get("affair") + "',to_date('" + map.get("starttime	") + "','yyyy-mm-dd'))";
+		jdbcTemplate.update(sql2, number);*/
 	}
+
+	@Override
+	public int getJudgmentPwd(String username, String old_pwd) {
+		String sql = "select upassword　from users where uaccount = ? ";
+		Map<String, Object> map = jdbcTemplate.queryForMap(sql,username);
+		String pwd = (String) map.get("UPASSWORD");
+		if (pwd.equals(old_pwd)) {
+			return 1;
+		}else {
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public void updatePwd(String new_pwd, String old_pwd) {
+		String sql = "update  users set upassword = ? where upassword = ?";
+		jdbcTemplate.update(sql,new_pwd,old_pwd);
+		
+	}
+
+	@Override
+	public Map<String, Object> getName(String cname) {
+		String sql = "SELECT UNAME FROM USERS WHERE UACCOUNT= ?";
+		Map<String, Object>map = jdbcTemplate.queryForMap(sql,cname);
+		return map;
+	}
+
+
 
 }

@@ -44,4 +44,25 @@ public interface EmployeeService {
 	 */
 	void addData(Map<String, Object> map);
 
+	/**
+	 * 判断密码是否正确
+	 * @param old_pwd
+	 * @return
+	 */
+	int getJudgmentPwd(String old_pwd);
+
+	/**
+	 * 修改密码
+	 * @param new_pwd
+	 * @param old_pwd 
+	 */
+	void updatePwd(String new_pwd, String old_pwd);
+
+	/**
+	 * 获得用户名中文
+	 * @param cname
+	 * @return
+	 */
+	Map<String, Object> getName(String cname);
+
 }

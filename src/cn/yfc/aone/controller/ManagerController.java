@@ -1,8 +1,10 @@
 package cn.yfc.aone.controller;
 
+import java.awt.Color;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFComment;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -39,7 +39,7 @@ public class ManagerController {
 
 	List<Map<String, Object>> list123;
 	List<Map<String, Object>> moneyList;
-
+	String P_NUMBERS;
 	Log log = LogFactory.getLog(this.getClass());
 
 	@Autowired
@@ -133,6 +133,16 @@ public class ManagerController {
 	}
 
 	/**
+	 * 项目员工信息管理界面
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/xmygxxgl")
+	public ModelAndView xmygxxgl() {
+		return new ModelAndView("xmygxxgl");
+	}
+
+	/**
 	 * 获取地图经纬度并显示到地图上
 	 * 
 	 * @param model
@@ -144,6 +154,7 @@ public class ManagerController {
 	@RequestMapping("/map")
 	public ModelAndView map(ModelMap model, String account) throws Exception {
 		String cname = new String(account.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println("地图的名字是什麽" + cname);
 		Map<String, Object> map = affairsService.getMapjw(cname);
 		String j = (String) map.get("LONGITUDE");
 		String w = (String) map.get("LATITUDE");
@@ -177,11 +188,19 @@ public class ManagerController {
 	 */
 	@ResponseBody
 	@RequestMapping("emplinfor")
-	public List<Map<String, Object>> emplInfor(String name) throws Exception {
+	public Map<String, Object> emplInfor(String name, HttpServletRequest request) throws Exception {
 		String lname = new String(name.getBytes("ISO8859-1"), "UTF-8");
-		List<Map<String, Object>> list = affairsService.selectAll(lname);
-		System.out.println(list);
-		return list;
+		int page = Integer.parseInt(request.getParameter("page"));
+		int start = Integer.parseInt(request.getParameter("start"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
+
+		List<Map<String, Object>> list1 = affairsService.selectAllInfo(lname);
+		List<Map<String, Object>> list = affairsService.selectAll(lname, page, start, limit);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("totalCount", list1.size());
+
+		return map;
 	}
 
 	/**
@@ -192,10 +211,17 @@ public class ManagerController {
 	 */
 	@ResponseBody
 	@RequestMapping("getYpzaygInfo")
-	public List<Map<String, Object>> getYpzaygInfo(String name) throws Exception {
+	public Map<String, Object> getYpzaygInfo(HttpServletRequest request, String name) throws Exception {
+		int page = Integer.parseInt(request.getParameter("page"));
+		int start = Integer.parseInt(request.getParameter("start"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
 		String lname = new String(name.getBytes("ISO8859-1"), "UTF-8");
-		List<Map<String, Object>> list = affairsService.getYpzaygInfo(lname);
-		return list;
+		List<Map<String, Object>> list1 = affairsService.getYpzaygInfo(lname);
+		List<Map<String, Object>> list = affairsService.getYpzaygAllInfo(lname, page, start, limit);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("totalCount", list1.size());
+		return map;
 	}
 
 	/**
@@ -241,21 +267,6 @@ public class ManagerController {
 	public String createUser(@RequestBody Map<String, Object> map) throws Exception {
 		System.out.println("map-古典风格" + map);
 		affairsService.createUser(map);
-		return "true";
-	}
-
-	/**
-	 * 更新项目是否完成
-	 * 
-	 * @param ISCOMPLETE
-	 * @return
-	 * @throws Exception
-	 */
-	@ResponseBody
-	@RequestMapping("updateInfo")
-	public String updateInfo(String ID, String ACCOUNT, String AFFAIR, String ISCOMPLETE) throws Exception {
-		System.out.println("士大夫首發式地方" + ISCOMPLETE);
-		affairsService.updateInfo(ISCOMPLETE, ID, ACCOUNT, AFFAIR);
 		return "true";
 	}
 
@@ -323,6 +334,42 @@ public class ManagerController {
 	}
 
 	/**
+	 * 获得项目编号
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getXmbh")
+	public List<Map<String, Object>> getXmbh() {
+		List<Map<String, Object>> list = travelService.getXmbh();
+		return list;
+	}
+
+	/**
+	 * 获得工号
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getGhData")
+	public List<Map<String, Object>> getGhData(String p_number) {
+		List<Map<String, Object>> list = travelService.getGhData(p_number);
+		return list;
+	}
+
+	/**
+	 * 获得工号
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getNumber")
+	public List<Map<String, Object>> getNumber(String post_name) {
+		List<Map<String, Object>> list = travelService.getNumber(post_name);
+		return list;
+	}
+
+	/**
 	 * 录入出差信息
 	 * 
 	 * @param request
@@ -334,10 +381,63 @@ public class ManagerController {
 		String city = request.getParameter("city");
 		String affair_name = request.getParameter("affair_name");
 		String go_date = request.getParameter("go_date");
+		String p_number = request.getParameter("p_number");
 		String post_name = request.getParameter("post_name");
 		String job_number = request.getParameter("job_number");
-		travelService.addTravelInfo(city, affair_name, go_date, post_name, job_number);
+		travelService.addTravelInfo(city, affair_name, go_date, post_name, job_number, p_number);
 		return "true";
+	}
+
+	/**
+	 * 添加新在外员工信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addTravelInfos")
+	public String addTravelInfos(HttpServletRequest request) {
+		String p_number = request.getParameter("P_NUMBER");
+		String p_city = request.getParameter("P_CITY");
+		String go_date = request.getParameter("go_date");
+		String p_name = request.getParameter("P_NAME");
+		String post_name = request.getParameter("post_name");
+		String job_number = request.getParameter("job_number");
+		System.out.println("p_number" + p_number + "p_city" + p_city + "go_date" + go_date + "p_name" + p_name
+				+ "post_name" + post_name + "job_number" + job_number);
+		travelService.addTravelInfos(p_number, p_city, go_date, post_name, job_number, p_name);
+		return "true";
+	}
+
+	/**
+	 * 重置用户名密码
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("resetPwd")
+	public String resetPwd(HttpServletRequest request) {
+		String VACCOUNT = request.getParameter("VACCOUNT");
+		System.out.println("resetPwd" + VACCOUNT);
+		travelService.resetPwd(VACCOUNT);
+		return "true";
+	}
+
+	/**
+	 * 创建项目编号
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addCreateTravelInfo")
+	public List<Map<String, Object>> addCreateTravelInfo(HttpServletRequest request) {
+		String add_city = request.getParameter("add_city");
+		String add_affair_name = request.getParameter("add_affair_name");
+		String add_go_date = request.getParameter("add_go_date");
+		List<Map<String, Object>> list = travelService.addCreateTravelInfo(add_city, add_affair_name, add_go_date);
+		return list;
 	}
 
 	/**
@@ -347,10 +447,55 @@ public class ManagerController {
 	 */
 	@ResponseBody
 	@RequestMapping("getTravelInfo")
-	public List<Map<String, Object>> getTravelInfo() {
-		list123 = travelService.getTravelInfo();
-		System.out.println("list123"+list123);
-		return list123;
+	public Map<String, Object> getTravelInfo(HttpServletRequest request, String P_NUMBER) {
+		int page = Integer.parseInt(request.getParameter("page"));
+		int start = Integer.parseInt(request.getParameter("start"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
+		list123 = travelService.getTravelInfo(P_NUMBER, page, start, limit);
+		List<Map<String, Object>> list1 = travelService.getAllTravelInfo(P_NUMBER);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list123);
+		map.put("totalCount", list1.size());
+
+		return map;
+	}
+
+	/**
+	 * 根据项目获得在外员工信息
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getTravelInfos")
+	public List<Map<String, Object>> getTravelInfos() {
+		List<Map<String, Object>> list = travelService.getTravelInfos(P_NUMBERS);
+		return list;
+	}
+
+	/**
+	 * 获得所点击项目编号信息
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getP_NUMBER")
+	public String getP_NUMBER(String P_NUMBER) {
+		this.P_NUMBERS = P_NUMBER;
+		System.out.println("P_NUMBER" + P_NUMBER);
+		return "true";
+	}
+
+	/**
+	 * 获得项目员工信息
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getXmygxxInfo")
+	public List<Map<String, Object>> getXmygxxInfo() {
+		List<Map<String, Object>> list = travelService.getXmygxxInfo();
+		System.out.println("项目信息得到了吗" + list);
+		return list;
 	}
 
 	/**
@@ -363,10 +508,13 @@ public class ManagerController {
 	@RequestMapping("addLeaveInfo")
 	public String addLeaveInfo(HttpServletRequest request) {
 		String log_number = request.getParameter("log_number");
+		String p_number = request.getParameter("p_number");
 		String start_date = request.getParameter("start_date");
 		String end_date = request.getParameter("end_date");
 		String leave_cause = request.getParameter("leave_cause");
-		travelService.addLeaveInfo(log_number, start_date, end_date, leave_cause);
+		System.out.println("log_number=" + log_number + "start_date=" + start_date + "end_date=" + end_date
+				+ "leave_cause=" + leave_cause + "p_number" + p_number);
+		travelService.addLeaveInfo(log_number, start_date, end_date, leave_cause, p_number);
 		return "true";
 	}
 
@@ -377,9 +525,16 @@ public class ManagerController {
 	 */
 	@ResponseBody
 	@RequestMapping("getLeaveInfo")
-	public List<Map<String, Object>> getLeaveInfo() {
-		List<Map<String, Object>> list = travelService.getLeaveInfo();
-		return list;
+	public Map<String, Object> getLeaveInfo(HttpServletRequest request, String P_NUMBER) {
+		int page = Integer.parseInt(request.getParameter("page"));
+		int start = Integer.parseInt(request.getParameter("start"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
+		List<Map<String, Object>> list = travelService.getLeaveInfo(page, start, limit, P_NUMBER);
+		List<Map<String, Object>> list1 = travelService.getAllLeave(P_NUMBER);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("totalCount", list1.size());
+		return map;
 	}
 
 	/**
@@ -405,9 +560,16 @@ public class ManagerController {
 	 */
 	@ResponseBody
 	@RequestMapping("getReimbursementInfo")
-	public List<Map<String, Object>> getReimbursementInfo() {
-		List<Map<String, Object>> list = travelService.getReimbursementInfo();
-		return list;
+	public Map<String, Object> getReimbursementInfo(HttpServletRequest request) {
+		int page = Integer.parseInt(request.getParameter("page"));
+		int start = Integer.parseInt(request.getParameter("start"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
+		List<Map<String, Object>> list = travelService.getReimbursementInfo(page, start, limit);
+		List<Map<String, Object>> list1 = travelService.getReimbursementCount();
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("totalCount", list1.size());
+		return map;
 	}
 
 	/**
@@ -433,9 +595,18 @@ public class ManagerController {
 	 */
 	@ResponseBody
 	@RequestMapping("getloanInfo")
-	public List<Map<String, Object>> getloanInfo() {
-		List<Map<String, Object>> list = travelService.getloanInfo();
-		return list;
+	public Map<String, Object> getloanInfo(HttpServletRequest request) {
+		int page = Integer.parseInt(request.getParameter("page"));
+		int start = Integer.parseInt(request.getParameter("start"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
+		System.out.println("page====" + page + "start===" + start + "limit+++" + limit);
+		List<Map<String, Object>> list = travelService.getloanInfo(page, start, limit);
+		List<Map<String, Object>> list1 = travelService.getloanCount();
+		System.out.println("list1==" + list1.size());
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("totalCount", list1.size());
+		return map;
 	}
 
 	/**
@@ -450,6 +621,19 @@ public class ManagerController {
 		String project_number = request.getParameter("project_number");
 		List<Map<String, Object>> list = travelService.getAllInfo(project_number);
 		return list;
+	}
+
+	/**
+	 * 删除在员工信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("delTravelInfo")
+	public String delTravelInfo(String TID) {
+		travelService.delTravelInfo(TID);
+		return "true";
 	}
 
 	/**
@@ -475,6 +659,23 @@ public class ManagerController {
 	}
 
 	/**
+	 * 添加在外员工撤离时间
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addTravelYgclInfo")
+	public List<Map<String, Object>> addTravelYgclInfo(HttpServletRequest request) {
+		String P_NUMBER = request.getParameter("P_NUMBER");
+		String JOB_NUMBER = request.getParameter("JOB_NUMBER");
+		String P_EVACUATE_DATE = request.getParameter("P_EVACUATE_DATE");
+		System.out.println("P_EVACUATE_DATE" + P_EVACUATE_DATE + "P_NUMBER" + P_NUMBER + "JOB_NUMBER" + JOB_NUMBER);
+		travelService.addTravelYgclInfo(P_NUMBER, JOB_NUMBER, P_EVACUATE_DATE);
+		return null;
+	}
+
+	/**
 	 * 获得所有工资信息
 	 * 
 	 * @param request
@@ -489,6 +690,7 @@ public class ManagerController {
 
 	/**
 	 * 导出出差信息
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
@@ -507,36 +709,43 @@ public class ManagerController {
 		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
 		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 创建一个居中格式
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
 		HSSFSheet sheet = wb.createSheet("出差信息表");
 		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
 		HSSFRow row = sheet.createRow((int) 0);
 		// 声明一个画图的顶级管理器
-	    //HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-	      // 定义注释的大小和位置,详见文档
-	   // HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
+		// HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+		// 定义注释的大小和位置,详见文档
+		// HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0,
+		// 0, 0, 0, (short) 4, 2, (short) 6, 5));
 
 		HSSFCell cell = row.createCell((short) 0);
 		cell.setCellValue("序号");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 1);
-		cell.setCellValue("项目名称");
+		cell.setCellValue("项目编号");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 2);
-		cell.setCellValue("工号");
+		cell.setCellValue("项目名称");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 3);
-		cell.setCellValue("姓名");
+		cell.setCellValue("工号");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 4);
-		cell.setCellValue("职务");
+		cell.setCellValue("姓名");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 5);
+		cell.setCellValue("职务");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 6);
 		cell.setCellValue("出发时间");
 		cell.setCellStyle(style);
 
 		List<Travel> travels = new ArrayList<>();
 		for (Map<String, Object> map : list123) {
+
 			BigDecimal bd = (BigDecimal) map.get("TID");
 			String id = bd.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
 			BigDecimal jn = (BigDecimal) map.get("JOB_NUMBER");
@@ -546,10 +755,11 @@ public class ManagerController {
 			 * Date date = (Date) map.get("TDATE"); String TDATE = new
 			 * SimpleDateFormat("yyyy-MM-dd").format(date);
 			 */
-			Travel user = new Travel(id, (String) map.get("TAFFAIR"), JOB_NUMBER, (String) map.get("TNAME"),
-					(String) map.get("DPOST"), (String) map.get("TDATE"));
+			Travel user = new Travel(id, (String) map.get("P_NUMBER"), (String) map.get("TAFFAIR"), JOB_NUMBER,
+					(String) map.get("TNAME"), (String) map.get("DPOST"), (String) map.get("TDATE"));
 			travels.add(user);
 		}
+
 		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
 
 		for (int i = 0; i < travels.size(); i++) {
@@ -557,17 +767,35 @@ public class ManagerController {
 			Travel stu = (Travel) travels.get(i);
 			// 第四步，创建单元格，并设置值
 			row.createCell((short) 0).setCellValue(stu.getTID());
-			row.createCell((short) 1).setCellValue(stu.getTAFFAIR());
-			row.createCell((short) 2).setCellValue(stu.getJOB_NUMBER());
-			row.createCell((short) 3).setCellValue(stu.getTNAME());
-			row.createCell((short) 4).setCellValue(stu.getDPOST());
-			row.createCell((short) 5).setCellValue(stu.getTDATE());
+			row.createCell((short) 1).setCellValue(stu.getP_NUMBER());
+			row.createCell((short) 2).setCellValue(stu.getTAFFAIR());
+			row.createCell((short) 3).setCellValue(stu.getJOB_NUMBER());
+			row.createCell((short) 4).setCellValue(stu.getTNAME());
+			row.createCell((short) 5).setCellValue(stu.getDPOST());
+			row.createCell((short) 6).setCellValue(stu.getTDATE());
 
 		}
+		// 创建表格之后设置行高与列宽
+		for (int i = 0; i < travels.size() + 1; i++) {
+			row = sheet.getRow(i);
+			row.setHeightInPoints(30);// 设置行高
+		}
+		for (int j = 0; j < 7; j++) {
+			sheet.setColumnWidth(j, 3766);
+		}
+
+		short colorIndex = 10;
+		HSSFPalette palette = wb.getCustomPalette();// 自定义颜色
+		Color rgb = Color.GREEN;
+		short bgIndex = colorIndex++; // 背景颜色下标值
+		palette.setColorAtIndex(bgIndex, (byte) rgb.getRed(), (byte) rgb.getGreen(), (byte) rgb.getBlue());
+		short bdIndex = colorIndex++; // 边框颜色下标值
+		rgb = Color.BLACK;
+		palette.setColorAtIndex(bdIndex, (byte) rgb.getRed(), (byte) rgb.getGreen(), (byte) rgb.getBlue());
 		// 第六步，将文件存到指定位置
 		try {
 			Travel stu = (Travel) travels.get(0);
-			FileOutputStream fout = new FileOutputStream("C:/Users/aone/Desktop/"+stu.getTAFFAIR()+"项目出差人员信息.xls");
+			FileOutputStream fout = new FileOutputStream("C:/Users/aone/Desktop/" + stu.getTAFFAIR() + "项目出差人员信息.xls");
 			wb.write(fout);
 			fout.close();
 		} catch (Exception e) {
@@ -579,6 +807,7 @@ public class ManagerController {
 
 	/**
 	 * 导出出差费用结算信息
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
@@ -596,7 +825,8 @@ public class ManagerController {
 		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
 		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
 		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 创建一个居中格式
+		// style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 创建一个居中格式
+		// style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
 		HSSFSheet sheet = wb.createSheet("出差费用结算表");
 		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
@@ -628,26 +858,31 @@ public class ManagerController {
 		cell.setCellValue("发放时间");
 		cell.setCellStyle(style);
 
-
 		List<Money> moneys = new ArrayList<>();
 		for (Map<String, Object> map : moneyList) {
 			BigDecimal rid = (BigDecimal) map.get("RID");
 			String RID = rid.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
 			BigDecimal jn = (BigDecimal) map.get("R_JOB_NUMBER");
 			String R_JOB_NUMBER = jn.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
-			BigDecimal rd = (BigDecimal) map.get("R_DAYS");
-			String R_DAYS = jn.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+			/*
+			 * BigDecimal rd = (BigDecimal) map.get("R_DAYS"); String R_DAYS =
+			 * rd.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+			 */
 			/*
 			 * Date date = (Date) map.get("TDATE"); String TDATE = new
 			 * SimpleDateFormat("yyyy-MM-dd").format(date);
 			 */
-			Money money = new Money(RID,R_JOB_NUMBER,(String)map.get("R_JOB_NAME"),(String)map.get("R_POST"),R_DAYS,(String)map.get("MONEYS"),(String)map.get("R_ENDTIME"),(String)map.get("R_RELEASETIME"));
+			Money money = new Money(RID, R_JOB_NUMBER, (String) map.get("R_JOB_NAME"), (String) map.get("R_POST"),
+					(String) map.get("R_DAYS"), (String) map.get("MONEYS"), (String) map.get("R_ENDTIME"),
+					(String) map.get("R_RELEASETIME"));
 			moneys.add(money);
 		}
 		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
 
 		for (int i = 0; i < moneys.size(); i++) {
 			row = sheet.createRow((int) i + 1);
+			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 创建一个居中格式
+			style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 			Money money = (Money) moneys.get(i);
 			// 第四步，创建单元格，并设置值
 			row.createCell((short) 0).setCellValue(money.getRID());
@@ -660,6 +895,24 @@ public class ManagerController {
 			row.createCell((short) 7).setCellValue(money.getR_RELEASETIME());
 
 		}
+
+		// 创建表格之后设置行高与列宽
+		for (int i = 0; i < moneys.size() + 1; i++) {
+			row = sheet.getRow(i);
+			row.setHeightInPoints(30);// 设置行高
+		}
+		for (int j = 0; j < 8; j++) {
+			sheet.setColumnWidth(j, 3766);
+		}
+
+		short colorIndex = 10;
+		HSSFPalette palette = wb.getCustomPalette();// 自定义颜色
+		Color rgb = Color.GREEN;
+		short bgIndex = colorIndex++; // 背景颜色下标值
+		palette.setColorAtIndex(bgIndex, (byte) rgb.getRed(), (byte) rgb.getGreen(), (byte) rgb.getBlue());
+		short bdIndex = colorIndex++; // 边框颜色下标值
+		rgb = Color.BLACK;
+		palette.setColorAtIndex(bdIndex, (byte) rgb.getRed(), (byte) rgb.getGreen(), (byte) rgb.getBlue());
 		// 第六步，将文件存到指定位置
 		try {
 			FileOutputStream fout = new FileOutputStream("C:/Users/aone/Desktop/出差费用结算信息.xls");
