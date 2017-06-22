@@ -12,6 +12,11 @@ Ext.onReady(function () {
     });
 });
 
+var evm = Ext.create('Ext.Img',{
+	src:'../evm/evm.png',
+	
+})
+
 var genderStore = Ext.create("Ext.data.Store", {
     fields: ["Name", "Value"],
     data: [
@@ -201,20 +206,7 @@ var west = new Ext.panel.Panel({
         collapsible: true,
         style: 'margin-top: 3px;',
         height: 205,
-        title: "未读信息",
-        items: [{
-            xtype: 'treepanel',
-            border: 0,
-            rootVisible: false,//根节点是否可见
-            root: {
-                children: [
-                    {text: 'xxx信息消费记录', leaf: true},
-                    {text: '财政支出信息', leaf: true},
-                    {text: '产品信息', leaf: true},
-                    {text: '客户建议信息', leaf: true}
-                ]
-            }
-        }]
+        items: [{}]
     }]
 });
 //编写 west panel
@@ -485,7 +477,36 @@ var south = new Ext.panel.Panel({
                     win.show(this);
                 }
             }, {
-                text: '保存'
+                text: '二维码',
+                handler:function(){
+                	var evmWin = Ext.create('widget.window', {
+                        title: '二维码',
+                        maximizable: false,
+                        draggable: false,
+                        closable: false,
+                        resizable: false,
+                        constrain: true,
+                        bodyStyle: "background:#ffffff",
+                        width: 276,
+                        height: 300,
+                        icon:'../evm/evm.png',
+                        bodyStyle: {
+                        	background:"evm/evm.png"
+                        },
+                        constrain: true,
+                        items:[evm],
+                        buttons: [{
+                            xtype: "button",
+                            text: "返回",
+                            handler: function () {
+                                evmWin.close();
+                            }
+                        }]
+                        
+                        });
+                        evmWin.show(this)
+                        
+                }
             }, {
                 text: '退出'
             }]
